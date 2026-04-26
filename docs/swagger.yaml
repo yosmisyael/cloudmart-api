@@ -1,0 +1,870 @@
+definitions:
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.Address:
+    properties:
+      additional_information:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      id:
+        type: integer
+      phone:
+        type: string
+      postal_code:
+        type: string
+      recipient:
+        type: string
+      state:
+        type: string
+      type:
+        description: e.g., "home", "office"
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.Category:
+    properties:
+      id:
+        type: integer
+      is_default:
+        type: boolean
+      name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.Order:
+    properties:
+      created_at:
+        type: string
+      grand_total:
+        type: number
+      id:
+        type: integer
+      logistic_service:
+        type: string
+      logistic_voucher_id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem'
+        type: array
+      payment_method:
+        type: string
+      payment_status:
+        type: string
+      payment_url:
+        type: string
+      shipping_address:
+        type: string
+      snap_token:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      price:
+        type: number
+      quantity:
+        type: integer
+      variant_details:
+        type: string
+      variant_id:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.Product:
+    properties:
+      category:
+        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category'
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      store:
+        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store'
+      store_id:
+        type: integer
+      updated_at:
+        type: string
+      variants:
+        items:
+          $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant'
+        type: array
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant:
+    properties:
+      color:
+        type: string
+      id:
+        type: integer
+      price:
+        type: number
+      product:
+        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product'
+      product_id:
+        type: integer
+      size:
+        type: string
+      sku:
+        type: string
+      stock:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_entity.Store:
+    properties:
+      address_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product'
+        type: array
+      user_id:
+        type: integer
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+      quantity:
+        type: integer
+      subtotal:
+        type: number
+      variant_color:
+        type: string
+      variant_id:
+        type: integer
+      variant_image:
+        type: string
+      variant_name:
+        type: string
+      variant_size:
+        type: string
+    type: object
+  github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      errors: {}
+      status:
+        type: string
+    type: object
+  internal_handler.AddToCartRequest:
+    properties:
+      quantity:
+        minimum: 1
+        type: integer
+      variant_id:
+        type: integer
+    required:
+    - quantity
+    - variant_id
+    type: object
+  internal_handler.CheckoutRequest:
+    properties:
+      address:
+        minLength: 10
+        type: string
+    required:
+    - address
+    type: object
+  internal_handler.CreateAddressRequest:
+    properties:
+      additional_information:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      phone:
+        type: string
+      postal_code:
+        type: string
+      recipient:
+        type: string
+      state:
+        type: string
+      type:
+        type: string
+    required:
+    - address
+    - city
+    - country
+    - phone
+    - postal_code
+    - recipient
+    - state
+    - type
+    type: object
+  internal_handler.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_handler.MidtransNotificationRequest:
+    properties:
+      gross_amount:
+        type: string
+      order_id:
+        type: string
+      signature_key:
+        type: string
+      status_code:
+        type: string
+      transaction_status:
+        type: string
+    type: object
+  internal_handler.ProfileResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+  internal_handler.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  internal_handler.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - phone
+    type: object
+  internal_handler.UpdateCartRequest:
+    properties:
+      quantity:
+        minimum: 1
+        type: integer
+    required:
+    - quantity
+    type: object
+info:
+  contact: {}
+paths:
+  /api/cart:
+    get:
+      description: Retrieve the authenticated user's cart items with subtotal per
+        item and grand total
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart items
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    grand_total:
+                      type: number
+                    items:
+                      items:
+                        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse'
+                      type: array
+                  type: object
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user cart
+      tags:
+      - Cart
+    post:
+      consumes:
+      - application/json
+      description: Add a product variant to cart or increment quantity if it already
+        exists
+      parameters:
+      - description: Variant and quantity
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.AddToCartRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Item added
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Validation error or variant not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Add item to cart
+      tags:
+      - Cart
+  /api/cart/{id}:
+    delete:
+      description: Delete a specific item from the user's cart
+      parameters:
+      - description: Cart item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item removed
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Invalid ID or item not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Remove item from cart
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/json
+      description: Update the exact quantity of a specific cart item
+      parameters:
+      - description: Cart item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New quantity
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.UpdateCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart updated
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Validation error or item not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Update cart item quantity
+      tags:
+      - Cart
+  /api/categories:
+    get:
+      description: Retrieve a list of all product categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category'
+                  type: array
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Get all categories
+      tags:
+      - Catalog
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user credentials and return access and refresh tokens
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    access_token:
+                      type: string
+                    refresh_token:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: User login
+      tags:
+      - Auth
+  /api/orders:
+    get:
+      description: Retrieve the authenticated user's order history
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order'
+                  type: array
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get order history
+      tags:
+      - Order
+  /api/orders/{id}:
+    get:
+      description: Retrieve a specific order and its associated items
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order detail
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order'
+              type: object
+        "400":
+          description: Invalid order ID
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get order detail
+      tags:
+      - Order
+  /api/orders/checkout:
+    post:
+      consumes:
+      - application/json
+      description: Create an order from the user's cart, validate stock, decrement
+        inventory, and clear cart atomically
+      parameters:
+      - description: Shipping address
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.CheckoutRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "409":
+          description: Stock insufficient or transaction failed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Checkout order
+      tags:
+      - Order
+  /api/products:
+    get:
+      description: Retrieve a paginated list of products with optional filtering by
+        category and search keyword
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Search by product name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Paginated product list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    limit:
+                      type: integer
+                    page:
+                      type: integer
+                    products:
+                      items:
+                        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product'
+                      type: array
+                    total:
+                      type: integer
+                  type: object
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Get products with pagination
+      tags:
+      - Catalog
+  /api/products/{id}:
+    get:
+      description: Retrieve detailed product information including variants, store,
+        and category
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product detail
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product'
+              type: object
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Get product detail
+      tags:
+      - Catalog
+  /api/profile:
+    get:
+      description: Retrieve the authenticated user's profile information excluding
+        password and refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_handler.ProfileResponse'
+              type: object
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - Profile
+  /api/profile/addresses:
+    get:
+      description: Retrieve all saved shipping addresses for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Address list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address'
+                  type: array
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user addresses
+      tags:
+      - Profile
+    post:
+      consumes:
+      - application/json
+      description: Create a new shipping address for the authenticated user
+      parameters:
+      - description: Address details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.CreateAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Address created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Add a new address
+      tags:
+      - Profile
+  /api/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Exchange a valid refresh token for a new access token
+      parameters:
+      - description: Refresh token payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token refreshed
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    access_token:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Invalid or expired refresh token
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Refresh access token
+      tags:
+      - Auth
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer account with name, email, password, and phone
+      parameters:
+      - description: Registration payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Registration successful
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "409":
+          description: Email already registered
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Register a new user
+      tags:
+      - Auth
+  /api/webhooks/midtrans:
+    post:
+      consumes:
+      - application/json
+      description: Receive asynchronous payment status notification from Midtrans
+        and update order payment status
+      parameters:
+      - description: Midtrans notification payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.MidtransNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification processed
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Invalid input or order ID
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Invalid signature
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Midtrans payment notification
+      tags:
+      - Webhook
+swagger: "2.0"

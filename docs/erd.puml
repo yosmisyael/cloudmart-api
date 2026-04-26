@@ -1,0 +1,159 @@
+@startuml erd
+
+entity User {
+    * id: number <<PK>>
+    --
+    * name: text
+    * password: text
+    * phone: text
+    * role: text
+}
+
+entity Address {
+    * id: number <<PK>>
+    --
+    * address: text
+    * city: text
+    * state: text
+    * country: text
+    * postal_code: text
+    * phone: text
+    * recipient: text
+    * type: text
+    additional_information: text
+    * user_id: number <<FK>>
+}
+
+entity Store {
+    * id: number <<PK>>
+    --
+    * name: text
+    * user_id: number <<FK>>
+    address_id: number <<FK>>
+}
+
+entity Voucher {
+    * id: number <<PK>>
+    --
+    * name: text
+    * type: text
+    * amount: number
+    * expired_at: date
+    store_id: number <<FK>>
+}
+
+entity UserVoucher {
+    * id: number <<PK>>
+    --
+    * voucher_id: number <<FK>>
+    * user_id: number <<FK>>
+}
+
+entity PaymentConfiguration {
+    * id: number <<PK>>
+    --
+    * name: text
+    * store_id: number <<FK>>
+}
+
+entity PaymentBank {
+    * id: number <<PK>>
+    --
+    * name: text
+    * account_id: text
+    * account_name: text
+    * payment_configuration_id: number <<FK>>
+}
+
+entity Product {
+    * id: number <<PK>>
+    --
+    * name: text
+    * description: text
+    * category_id: number <<FK>>
+    * store_id: number <<FK>>
+}
+
+entity ProductVariant {
+    * sku: number <<PK>>
+    --
+    * color: text
+    * size: text
+    * price: number
+    * stock: number
+    * product_id: number <<FK>>
+}
+
+entity Category {
+    * id: number <<PK>>
+    --
+    * name: text
+    user_id: number <<FK>>
+    * is_default: bool
+}
+
+entity Order {
+    * id: number <<PK>>
+    * user_id: number <<FK>> <<PK>>
+    --
+    * grand_total: number
+    * payment_method: text
+    * payment_status: text
+    * shipping_address: text
+    * logistic_service: text
+    * snap_token: text
+    * payment_url: text  
+    logistic_voucher_id: number <<FK>>
+}
+
+entity OrderItem {
+    * order_id: number <<FK>> <<PK>>
+    * variant_id: number <<FK>> <<PK>>
+    --
+    * variant_details: text
+    * price: number
+    * quantity: number
+}
+
+entity Logistic {
+    * id: number <<PK>>
+    --
+    * name: text
+}
+
+entity LogisticService {
+    * id: number <<PK>>
+    --
+    * name: text
+    * base_price: number
+}
+
+
+entity Cart {
+    * id: number <<PK>>
+    --
+    * quantity: number
+    * product_sku: number <<FK>>
+    * user_id: number <<FK>>
+}
+
+
+Logistic ||--|{ LogisticService
+Order }|--|| LogisticService
+Cart }o--|| ProductVariant
+User ||--o{ Cart
+Product }o--|| Store
+User ||--o| Store
+User ||--o{ Address
+User ||--o{ Order
+Product ||--|{ ProductVariant
+Store ||--o{ Voucher
+Voucher }o--|| User
+Store ||--o{ PaymentBank
+Product }o--|| Category
+Order }|--|| PaymentConfiguration
+Order ||--|{ OrderItem
+OrderItem }|--|| ProductVariant
+UserVoucher }o--|| Voucher
+Order |o--o| UserVoucher
+@enduml
