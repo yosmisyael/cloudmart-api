@@ -11,15 +11,15 @@ A high-performance e-commerce backend engine built with Go, specifically archite
 ```sh
 git clone https://github.com/yosmisyael/cloudmart-web-service.git
  ```
-3. Setup environment variables:
+2. Setup environment variables:
 ```sh
 cp .env.example .env
 ```
-5. Generate swagger docs:
+3. Generate swagger docs:
 ```sh
 swag init -g cmd/api/main.go --parseDependency --parseInternal
 ```
-7. Run the server:
+4. Run the server:
 ```sh
 go run cmd/api/main.go
 ```
