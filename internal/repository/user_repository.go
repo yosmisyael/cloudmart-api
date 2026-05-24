@@ -9,6 +9,7 @@ type UserRepository interface {
 	FindByID(id uint) (*entity.User, error)
 	FindAddresses(userID uint) ([]entity.Address, error)
 	CreateAddress(address *entity.Address) error
+	UpdateRole(userID uint, role string) error
 }
 
 type userRepository struct {
@@ -36,4 +37,8 @@ func (r *userRepository) FindAddresses(userID uint) ([]entity.Address, error) {
 
 func (r *userRepository) CreateAddress(address *entity.Address) error {
 	return r.db.Create(address).Error
+}
+
+func (r *userRepository) UpdateRole(userID uint, role string) error {
+	return r.db.Model(&entity.User{}).Where("id = ?", userID).Update("role", role).Error
 }

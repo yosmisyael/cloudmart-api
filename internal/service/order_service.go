@@ -3,6 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/yosmisyael/cloudmart-web-service/internal/entity"
 	"github.com/yosmisyael/cloudmart-web-service/internal/repository"
@@ -78,6 +80,8 @@ func (s *orderService) Checkout(userID uint, address string) (*entity.Order, err
 		return nil, fmt.Errorf("transaksi gagal: %v", err)
 	}
 
+	go s.sendOrderNotification(order.ID, userID)
+
 	return &order, nil
 }
 
@@ -87,4 +91,12 @@ func (s *orderService) GetOrders(userID uint) ([]entity.Order, error) {
 
 func (s *orderService) GetOrderByID(id, userID uint) (*entity.Order, error) {
 	return s.orderRepo.FindByID(id, userID)
+}
+
+func (s *orderService) sendOrderNotification(orderID, userID uint) {
+	log.Println("Simulate notification send")
+
+	time.Sleep(2 * time.Second)
+
+	log.Println("Notification sent successfully")
 }

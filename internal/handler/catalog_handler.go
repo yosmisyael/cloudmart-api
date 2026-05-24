@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/yosmisyael/cloudmart-web-service/internal/entity"
 	"github.com/yosmisyael/cloudmart-web-service/internal/service"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/response"
-	_ "github.com/yosmisyael/cloudmart-web-service/internal/entity"
 )
 
 type CatalogHandler struct {
@@ -20,7 +20,7 @@ func NewCatalogHandler(router fiber.Router, catalogService service.CatalogServic
 	router.Get("/api/products/:id", handler.GetProductByID)
 }
 
-// @Summary Get all categories
+// GetCategories @Summary Get all categories
 // @Description Retrieve a list of all product categories
 // @Tags Catalog
 // @Produce json
@@ -44,7 +44,7 @@ func (h *CatalogHandler) GetCategories(c *fiber.Ctx) error {
 	})
 }
 
-// @Summary Get products with pagination
+// GetProducts @Summary Get products with pagination
 // @Description Retrieve a paginated list of products with optional filtering by category and search keyword
 // @Tags Catalog
 // @Produce json

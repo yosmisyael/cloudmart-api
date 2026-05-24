@@ -36,7 +36,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -50,7 +50,7 @@ const docTemplate = `{
                                                 "items": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse"
+                                                        "$ref": "#/definitions/service.CartItemResponse"
                                                     }
                                                 }
                                             }
@@ -63,7 +63,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.AddToCartRequest"
+                            "$ref": "#/definitions/handler.AddToCartRequest"
                         }
                     }
                 ],
@@ -102,7 +102,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error or variant not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -156,7 +156,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.UpdateCartRequest"
+                            "$ref": "#/definitions/handler.UpdateCartRequest"
                         }
                     }
                 ],
@@ -166,7 +166,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -182,7 +182,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error or item not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -216,7 +216,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -232,7 +232,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid ID or item not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -247,14 +247,13 @@ const docTemplate = `{
                 "tags": [
                     "Catalog"
                 ],
-                "summary": "Get all categories",
                 "responses": {
                     "200": {
                         "description": "List of categories",
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -262,7 +261,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
+                                                "$ref": "#/definitions/entity.Category"
                                             }
                                         }
                                     }
@@ -273,7 +272,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -299,7 +298,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.LoginRequest"
+                            "$ref": "#/definitions/handler.LoginRequest"
                         }
                     }
                 ],
@@ -309,7 +308,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -333,13 +332,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -366,7 +365,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -374,7 +373,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
+                                                "$ref": "#/definitions/entity.Order"
                                             }
                                         }
                                     }
@@ -385,7 +384,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -416,7 +415,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.CheckoutRequest"
+                            "$ref": "#/definitions/handler.CheckoutRequest"
                         }
                     }
                 ],
@@ -426,13 +425,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
+                                            "$ref": "#/definitions/entity.Order"
                                         }
                                     }
                                 }
@@ -442,13 +441,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "Stock insufficient or transaction failed",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -484,13 +483,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
+                                            "$ref": "#/definitions/entity.Order"
                                         }
                                     }
                                 }
@@ -500,13 +499,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid order ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Order not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -521,7 +520,6 @@ const docTemplate = `{
                 "tags": [
                     "Catalog"
                 ],
-                "summary": "Get products with pagination",
                 "parameters": [
                     {
                         "type": "integer",
@@ -556,7 +554,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -573,7 +571,7 @@ const docTemplate = `{
                                                 "products": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
+                                                        "$ref": "#/definitions/entity.Product"
                                                     }
                                                 },
                                                 "total": {
@@ -589,7 +587,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -620,13 +618,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
+                                            "$ref": "#/definitions/entity.Product"
                                         }
                                     }
                                 }
@@ -636,13 +634,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid product ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -669,13 +667,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_handler.ProfileResponse"
+                                            "$ref": "#/definitions/handler.ProfileResponse"
                                         }
                                     }
                                 }
@@ -685,7 +683,7 @@ const docTemplate = `{
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -712,7 +710,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -720,7 +718,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
+                                                "$ref": "#/definitions/entity.Address"
                                             }
                                         }
                                     }
@@ -731,7 +729,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -760,7 +758,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.CreateAddressRequest"
+                            "$ref": "#/definitions/handler.CreateAddressRequest"
                         }
                     }
                 ],
@@ -770,13 +768,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
+                                            "$ref": "#/definitions/entity.Address"
                                         }
                                     }
                                 }
@@ -786,13 +784,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -818,7 +816,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.RefreshRequest"
+                            "$ref": "#/definitions/handler.RefreshRequest"
                         }
                     }
                 ],
@@ -828,7 +826,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -849,13 +847,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid or expired refresh token",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -881,7 +879,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.RegisterRequest"
+                            "$ref": "#/definitions/handler.RegisterRequest"
                         }
                     }
                 ],
@@ -891,7 +889,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -907,13 +905,2301 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "Email already registered",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/banks/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a bank account from a payment configuration",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Delete bank",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Bank ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Bank not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/categories": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all default categories plus the seller's own custom categories",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Get seller categories",
+                "responses": {
+                    "200": {
+                        "description": "Category list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Category"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new custom category owned by the authenticated seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Create category",
+                "parameters": [
+                    {
+                        "description": "Category payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Category created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Category"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/categories/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a custom category owned by the authenticated seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Update category",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Category payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Category"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden — default category or not owned",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a custom category owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Delete category",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden — default category or not owned",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/dashboard": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve aggregated statistics for the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Dashboard"
+                ],
+                "summary": "Get seller dashboard summary",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard summary",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/service.DashboardSummary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/logistics": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all logistics providers with their services",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Get logistics",
+                "responses": {
+                    "200": {
+                        "description": "Logistic list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Logistic"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new logistics provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Create logistic",
+                "parameters": [
+                    {
+                        "description": "Logistic payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.LogisticRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Logistic created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Logistic"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/logistics/services/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a shipping service tier",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Update logistic service",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Service payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.LogisticServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.LogisticService"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a shipping service tier",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Delete logistic service",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/logistics/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a logistics provider's name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Update logistic",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Logistic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Logistic payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.LogisticRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logistic updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Logistic"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Logistic not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a logistics provider",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Delete logistic",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Logistic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Logistic not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/logistics/{id}/services": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a shipping service tier to an existing logistics provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Logistic"
+                ],
+                "summary": "Add logistic service",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Logistic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Service payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.LogisticServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Service added",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.LogisticService"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Logistic not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/orders": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all orders that contain items from the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Order"
+                ],
+                "summary": "Get seller orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by payment_status (pending, processing, shipped, delivered, cancelled)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Order"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/orders/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve a specific order detail for the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Order"
+                ],
+                "summary": "Get seller order detail",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order detail",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Order"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/orders/{id}/status": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update the status of an order belonging to the authenticated seller's store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Order"
+                ],
+                "summary": "Update order status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Status payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateOrderStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status updated",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or invalid status",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/payment-configs": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all payment configurations for the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Get payment configurations",
+                "responses": {
+                    "200": {
+                        "description": "Payment config list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.PaymentConfiguration"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new payment configuration for the authenticated seller's store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Create payment configuration",
+                "parameters": [
+                    {
+                        "description": "Payment config payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.PaymentConfigRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment config created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.PaymentConfiguration"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/payment-configs/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a payment configuration owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Delete payment configuration",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Payment config ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Payment config not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/payment-configs/{id}/banks": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a bank account to an existing payment configuration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Add bank to payment configuration",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Payment config ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Bank payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.BankRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Bank added",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.PaymentBank"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Payment config not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/products": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all products belonging to the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Get seller products",
+                "responses": {
+                    "200": {
+                        "description": "Product list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new product in the authenticated seller's store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Create product",
+                "parameters": [
+                    {
+                        "description": "Product payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CreateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Product created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Product"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/products/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a product owned by the authenticated seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Update product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Product payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Product"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a product owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Delete product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/products/{id}/variants": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all variants for a product owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Get product variants",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Variant list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.ProductVariant"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a new variant to a product owned by the authenticated seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Create variant",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Variant payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.VariantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Variant created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.ProductVariant"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "SKU already exists",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/store": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve the authenticated seller's store profile",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Store"
+                ],
+                "summary": "Get seller store",
+                "responses": {
+                    "200": {
+                        "description": "Store data",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Store"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Store not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update the authenticated seller's store name or address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Store"
+                ],
+                "summary": "Update store",
+                "parameters": [
+                    {
+                        "description": "Store update payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateStoreRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Store updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Store"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Store not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Register a new store for the authenticated user and upgrade their role to seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Store"
+                ],
+                "summary": "Create store",
+                "parameters": [
+                    {
+                        "description": "Store creation payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CreateStoreRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Store created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Store"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Store already exists",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/variants/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a variant belonging to the authenticated seller's product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Update variant",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Variant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Variant payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.VariantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Variant updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.ProductVariant"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Variant not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a variant belonging to the authenticated seller's product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Delete variant",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Variant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Variant not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/vouchers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all vouchers belonging to the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Get vouchers",
+                "responses": {
+                    "200": {
+                        "description": "Voucher list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/entity.Voucher"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new voucher for the authenticated seller's store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Create voucher",
+                "parameters": [
+                    {
+                        "description": "Voucher payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.VoucherRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Voucher created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Voucher"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/vouchers/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a voucher owned by the authenticated seller",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Update voucher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Voucher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Voucher payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.VoucherRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voucher updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/entity.Voucher"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a voucher owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Promo"
+                ],
+                "summary": "Delete voucher",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Voucher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found",
+                        "schema": {
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -939,7 +3225,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_handler.MidtransNotificationRequest"
+                            "$ref": "#/definitions/handler.MidtransNotificationRequest"
                         }
                     }
                 ],
@@ -949,7 +3235,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                    "$ref": "#/definitions/response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -965,13 +3251,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid input or order ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Invalid signature",
                         "schema": {
-                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                            "$ref": "#/definitions/response.WebResponse"
                         }
                     }
                 }
@@ -979,7 +3265,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Address": {
+        "entity.Address": {
             "type": "object",
             "properties": {
                 "additional_information": {
@@ -1018,7 +3304,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Category": {
+        "entity.Category": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1035,7 +3321,41 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Order": {
+        "entity.Logistic": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "services": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.LogisticService"
+                    }
+                }
+            }
+        },
+        "entity.LogisticService": {
+            "type": "object",
+            "properties": {
+                "base_price": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "logistic_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Order": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1056,7 +3376,7 @@ const docTemplate = `{
                 "order_items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem"
+                        "$ref": "#/definitions/entity.OrderItem"
                     }
                 },
                 "payment_method": {
@@ -1082,7 +3402,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem": {
+        "entity.OrderItem": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1105,11 +3425,51 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Product": {
+        "entity.PaymentBank": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "account_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "payment_configuration_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.PaymentConfiguration": {
+            "type": "object",
+            "properties": {
+                "banks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.PaymentBank"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "store_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.Product": {
             "type": "object",
             "properties": {
                 "category": {
-                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
+                    "$ref": "#/definitions/entity.Category"
                 },
                 "category_id": {
                     "type": "integer"
@@ -1127,7 +3487,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "store": {
-                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store"
+                    "$ref": "#/definitions/entity.Store"
                 },
                 "store_id": {
                     "type": "integer"
@@ -1138,12 +3498,12 @@ const docTemplate = `{
                 "variants": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
+                        "$ref": "#/definitions/entity.ProductVariant"
                     }
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant": {
+        "entity.ProductVariant": {
             "type": "object",
             "properties": {
                 "color": {
@@ -1156,7 +3516,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "product": {
-                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
+                    "$ref": "#/definitions/entity.Product"
                 },
                 "product_id": {
                     "type": "integer"
@@ -1172,7 +3532,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Store": {
+        "entity.Store": {
             "type": "object",
             "properties": {
                 "address_id": {
@@ -1187,7 +3547,7 @@ const docTemplate = `{
                 "products": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
+                        "$ref": "#/definitions/entity.Product"
                     }
                 },
                 "user_id": {
@@ -1195,52 +3555,72 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse": {
+        "entity.User": {
             "type": "object",
             "properties": {
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Address"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "price": {
-                    "type": "number"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "subtotal": {
-                    "type": "number"
-                },
-                "variant_color": {
+                "name": {
                     "type": "string"
                 },
-                "variant_id": {
-                    "type": "integer"
-                },
-                "variant_image": {
+                "phone": {
                     "type": "string"
                 },
-                "variant_name": {
+                "role": {
                     "type": "string"
                 },
-                "variant_size": {
+                "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse": {
+        "entity.Voucher": {
             "type": "object",
             "properties": {
-                "code": {
+                "amount": {
+                    "type": "number"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "integer"
                 },
-                "data": {},
-                "errors": {},
-                "status": {
+                "max": {
+                    "type": "number"
+                },
+                "name": {
                     "type": "string"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "\"percentage\", \"price\", \"free_shipping\",",
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.User"
+                    }
                 }
             }
         },
-        "internal_handler.AddToCartRequest": {
+        "handler.AddToCartRequest": {
             "type": "object",
             "required": [
                 "quantity",
@@ -1256,7 +3636,39 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.CheckoutRequest": {
+        "handler.BankRequest": {
+            "type": "object",
+            "required": [
+                "account_id",
+                "account_name",
+                "name"
+            ],
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "account_name": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.CategoryRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                }
+            }
+        },
+        "handler.CheckoutRequest": {
             "type": "object",
             "required": [
                 "address"
@@ -1268,7 +3680,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.CreateAddressRequest": {
+        "handler.CreateAddressRequest": {
             "type": "object",
             "required": [
                 "address",
@@ -1310,7 +3722,40 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.LoginRequest": {
+        "handler.CreateProductRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "name"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 3
+                }
+            }
+        },
+        "handler.CreateStoreRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
+                }
+            }
+        },
+        "handler.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1325,7 +3770,33 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.MidtransNotificationRequest": {
+        "handler.LogisticRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.LogisticServiceRequest": {
+            "type": "object",
+            "required": [
+                "base_price",
+                "name"
+            ],
+            "properties": {
+                "base_price": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.MidtransNotificationRequest": {
             "type": "object",
             "properties": {
                 "gross_amount": {
@@ -1345,7 +3816,18 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.ProfileResponse": {
+        "handler.PaymentConfigRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ProfileResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1365,7 +3847,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.RefreshRequest": {
+        "handler.RefreshRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -1376,7 +3858,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.RegisterRequest": {
+        "handler.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1400,7 +3882,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_handler.UpdateCartRequest": {
+        "handler.UpdateCartRequest": {
             "type": "object",
             "required": [
                 "quantity"
@@ -1409,6 +3891,182 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer",
                     "minimum": 1
+                }
+            }
+        },
+        "handler.UpdateOrderStatusRequest": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "processing",
+                        "shipped",
+                        "delivered",
+                        "cancelled"
+                    ]
+                }
+            }
+        },
+        "handler.UpdateProductRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "name"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 3
+                }
+            }
+        },
+        "handler.UpdateStoreRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
+                }
+            }
+        },
+        "handler.VariantRequest": {
+            "type": "object",
+            "required": [
+                "color",
+                "price",
+                "size",
+                "sku"
+            ],
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "handler.VoucherRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "expired_at",
+                "name",
+                "type"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "max": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "percentage",
+                        "price",
+                        "free_shipping"
+                    ]
+                }
+            }
+        },
+        "response.WebResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "errors": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.CartItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "subtotal": {
+                    "type": "number"
+                },
+                "variant_color": {
+                    "type": "string"
+                },
+                "variant_id": {
+                    "type": "integer"
+                },
+                "variant_image": {
+                    "type": "string"
+                },
+                "variant_name": {
+                    "type": "string"
+                },
+                "variant_size": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.DashboardSummary": {
+            "type": "object",
+            "properties": {
+                "low_stock_items": {
+                    "type": "integer"
+                },
+                "pending_orders": {
+                    "type": "integer"
+                },
+                "total_orders": {
+                    "type": "integer"
+                },
+                "total_products": {
+                    "type": "integer"
+                },
+                "total_revenue": {
+                    "type": "number"
                 }
             }
         }
