@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 
 	"github.com/yosmisyael/cloudmart-web-service/internal/entity"
@@ -42,16 +43,22 @@ type SellerCatalogService interface {
 	CreateVariant(userID, productID uint, req VariantInput) (*entity.ProductVariant, error)
 	UpdateVariant(userID, variantID uint, req VariantInput) (*entity.ProductVariant, error)
 	DeleteVariant(userID, variantID uint) error
+
+	UploadProductImage(ctx context.Context, userID, productID uint, data []byte, filename, contentType string) (string, error)
+	DeleteProductImage(ctx context.Context, userID, productID uint) error
+	UploadVariantImage(ctx context.Context, userID, variantID uint, data []byte, filename, contentType string) (string, error)
+	DeleteVariantImage(ctx context.Context, userID, variantID uint) error
 }
 
 type sellerCatalogService struct {
 	storeRepo    repository.StoreRepository
 	categoryRepo repository.CategoryRepository
 	productRepo  repository.ProductRepository
+	s3Svc        S3Service
 }
 
-func NewSellerCatalogService(storeRepo repository.StoreRepository, categoryRepo repository.CategoryRepository, productRepo repository.ProductRepository) SellerCatalogService {
-	return &sellerCatalogService{storeRepo, categoryRepo, productRepo}
+func NewSellerCatalogService(storeRepo repository.StoreRepository, categoryRepo repository.CategoryRepository, productRepo repository.ProductRepository, s3Svc S3Service) SellerCatalogService {
+	return &sellerCatalogService{storeRepo, categoryRepo, productRepo, s3Svc}
 }
 
 func (s *sellerCatalogService) GetMyCategories(userID uint) ([]entity.Category, error) {
@@ -293,3 +300,122 @@ func (s *sellerCatalogService) DeleteVariant(userID, variantID uint) error {
 	}
 	return nil
 }
+
+func (s *sellerCatalogService) UploadProductImage(ctx context.Context, userID, productID uint, data []byte, filename, contentType string) (string, error) {
+	store, err := s.storeRepo.FindByUserID(userID)
+	if err != nil {
+		return "", errors.New("toko tidak ditemukan")
+	}
+
+	product, err := s.productRepo.FindByID(productID)
+	if err != nil {
+		return "", errors.New("produk tidak ditemukan")
+	}
+
+	if product.StoreID != store.ID {
+		return "", errors.New("akses ditolak")
+	}
+
+	if product.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(product.ImageURL))
+	}
+
+	url, err := s.s3Svc.UploadFile(ctx, "products", filename, data, contentType)
+	if err != nil {
+		return "", errors.New("gagal upload gambar")
+	}
+
+	if err := s.productRepo.UpdateImageURL(productID, url); err != nil {
+		return "", errors.New("gagal update url gambar")
+	}
+
+	return url, nil
+}
+
+func (s *sellerCatalogService) DeleteProductImage(ctx context.Context, userID, productID uint) error {
+	store, err := s.storeRepo.FindByUserID(userID)
+	if err != nil {
+		return errors.New("toko tidak ditemukan")
+	}
+
+	product, err := s.productRepo.FindByID(productID)
+	if err != nil {
+		return errors.New("produk tidak ditemukan")
+	}
+
+	if product.StoreID != store.ID {
+		return errors.New("akses ditolak")
+	}
+
+	if product.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(product.ImageURL))
+		_ = s.productRepo.UpdateImageURL(productID, "")
+	}
+
+	return nil
+}
+
+func (s *sellerCatalogService) UploadVariantImage(ctx context.Context, userID, variantID uint, data []byte, filename, contentType string) (string, error) {
+	variant, err := s.productRepo.FindVariantByID(variantID)
+	if err != nil {
+		return "", errors.New("varian tidak ditemukan")
+	}
+
+	store, err := s.storeRepo.FindByUserID(userID)
+	if err != nil {
+		return "", errors.New("toko tidak ditemukan")
+	}
+
+	product, err := s.productRepo.FindByID(variant.ProductID)
+	if err != nil {
+		return "", errors.New("produk tidak ditemukan")
+	}
+
+	if product.StoreID != store.ID {
+		return "", errors.New("akses ditolak")
+	}
+
+	if variant.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(variant.ImageURL))
+	}
+
+	url, err := s.s3Svc.UploadFile(ctx, "variants", filename, data, contentType)
+	if err != nil {
+		return "", errors.New("gagal upload gambar varian")
+	}
+
+	if err := s.productRepo.UpdateVariantImageURL(variantID, url); err != nil {
+		return "", errors.New("gagal update url gambar varian")
+	}
+
+	return url, nil
+}
+
+func (s *sellerCatalogService) DeleteVariantImage(ctx context.Context, userID, variantID uint) error {
+	variant, err := s.productRepo.FindVariantByID(variantID)
+	if err != nil {
+		return errors.New("varian tidak ditemukan")
+	}
+
+	store, err := s.storeRepo.FindByUserID(userID)
+	if err != nil {
+		return errors.New("toko tidak ditemukan")
+	}
+
+	product, err := s.productRepo.FindByID(variant.ProductID)
+	if err != nil {
+		return errors.New("produk tidak ditemukan")
+	}
+
+	if product.StoreID != store.ID {
+		return errors.New("akses ditolak")
+	}
+
+	if variant.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(variant.ImageURL))
+		_ = s.productRepo.UpdateVariantImageURL(variantID, "")
+	}
+
+	return nil
+}
+

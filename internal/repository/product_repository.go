@@ -17,6 +17,8 @@ type ProductRepository interface {
 	UpdateVariant(v *entity.ProductVariant) error
 	DeleteVariant(id uint) error
 	FindVariantsByProductID(productID uint) ([]entity.ProductVariant, error)
+	UpdateImageURL(productID uint, url string) error
+	UpdateVariantImageURL(variantID uint, url string) error
 }
 
 type productRepository struct {
@@ -99,4 +101,12 @@ func (r *productRepository) FindVariantsByProductID(productID uint) ([]entity.Pr
 	var variants []entity.ProductVariant
 	err := r.db.Where("product_id = ?", productID).Find(&variants).Error
 	return variants, err
+}
+
+func (r *productRepository) UpdateImageURL(productID uint, url string) error {
+	return r.db.Model(&entity.Product{}).Where("id = ?", productID).Update("image_url", url).Error
+}
+
+func (r *productRepository) UpdateVariantImageURL(variantID uint, url string) error {
+	return r.db.Model(&entity.ProductVariant{}).Where("id = ?", variantID).Update("image_url", url).Error
 }

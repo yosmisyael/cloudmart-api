@@ -24,6 +24,7 @@ type MidtransNotificationRequest struct {
 	GrossAmount       string `json:"gross_amount"`
 	SignatureKey      string `json:"signature_key"`
 	TransactionStatus string `json:"transaction_status"`
+	PaymentType       string `json:"payment_type"`
 }
 
 // @Summary Midtrans payment notification
@@ -61,6 +62,7 @@ func (h *WebhookHandler) MidtransNotification(c *fiber.Ctx) error {
 		req.GrossAmount,
 		req.SignatureKey,
 		req.TransactionStatus,
+		req.PaymentType,
 	); err != nil {
 		return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{
 			Code:   fiber.StatusForbidden,

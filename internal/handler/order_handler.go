@@ -21,6 +21,7 @@ func NewOrderHandler(router fiber.Router, orderService service.OrderService, cfg
 	handler := &OrderHandler{orderService: orderService}
 	orders := router.Group("/api/orders", middleware.Protected(cfg))
 	orders.Post("/checkout", handler.Checkout)
+	orders.Post("/:id/pay", handler.InitiatePayment)
 	orders.Get("/", handler.GetOrders)
 	orders.Get("/:id", handler.GetOrderByID)
 }
@@ -137,5 +138,55 @@ func (h *OrderHandler) GetOrderByID(c *fiber.Ctx) error {
 		Code:   fiber.StatusOK,
 		Status: "OK",
 		Data:   order,
+	})
+}
+
+// @Summary     Initiate payment
+// @Description Create a Midtrans Snap transaction for a pending order and return the payment token and URL
+// @Tags        Order
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Order ID"
+// @Success     200 {object} response.WebResponse{data=object{snap_token=string,payment_url=string}} "Payment initiated"
+// @Failure     400 {object} response.WebResponse "Invalid order ID"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     404 {object} response.WebResponse "Order not found"
+// @Failure     409 {object} response.WebResponse "Payment already processed"
+// @Failure     500 {object} response.WebResponse "Payment gateway error"
+// @Router      /api/orders/{id}/pay [post]
+func (h *OrderHandler) InitiatePayment(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code:   fiber.StatusBadRequest,
+			Status: "Bad Request",
+			Errors: "ID pesanan tidak valid",
+		})
+	}
+
+	order, err := h.orderService.InitiatePayment(userID, uint(id))
+	if err != nil {
+		status := fiber.StatusInternalServerError
+		if err.Error() == "pembayaran sudah diproses" {
+			status = fiber.StatusConflict
+		} else if err.Error() == "pesanan tidak ditemukan" {
+			status = fiber.StatusNotFound
+		}
+		
+		return c.Status(status).JSON(response.WebResponse{
+			Code:   status,
+			Status: "Error",
+			Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code:   fiber.StatusOK,
+		Status: "OK",
+		Data: fiber.Map{
+			"snap_token":  order.SnapToken,
+			"payment_url": order.PaymentURL,
+		},
 	})
 }

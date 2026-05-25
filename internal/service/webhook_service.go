@@ -11,7 +11,7 @@ import (
 )
 
 type WebhookService interface {
-	HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus string) error
+	HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error
 }
 
 type webhookService struct {
@@ -26,7 +26,7 @@ func NewWebhookService(orderRepo repository.OrderRepository, cfg *config.Config)
 	}
 }
 
-func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus string) error {
+func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error {
 	raw := strconv.FormatUint(uint64(orderID), 10) + statusCode + grossAmount + s.config.MidtransServerKey
 	hash := sha512.Sum512([]byte(raw))
 	expectedSignature := hex.EncodeToString(hash[:])
@@ -51,6 +51,10 @@ func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, gr
 		paymentStatus = "pending"
 	default:
 		paymentStatus = transactionStatus
+	}
+
+	if paymentType != "" {
+		_ = s.orderRepo.UpdatePaymentMethod(orderID, paymentType)
 	}
 
 	return s.orderRepo.UpdatePaymentStatus(orderID, paymentStatus)

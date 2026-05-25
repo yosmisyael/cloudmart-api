@@ -37,4 +37,6 @@ type OrderItem struct {
 	VariantDetails string  `gorm:"type:text;not null" json:"variant_details"`
 	Price          float64 `gorm:"type:decimal(10,2);not null" json:"price"`
 	Quantity       int     `gorm:"not null" json:"quantity"`
+
+	Order Order `gorm:"foreignKey:OrderID" json:"order,omitempty"`
 }

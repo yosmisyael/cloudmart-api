@@ -42,6 +42,8 @@ func main() {
 		&entity.PaymentConfiguration{},
 		&entity.PaymentBank{},
 		&entity.Voucher{},
+		&entity.Review{},
+		&entity.ReviewImage{},
 	)
 	if err != nil {
 		log.Fatalf("[Migration] Failed: %v", err)
@@ -60,15 +62,21 @@ func main() {
 	paymentRepo := repository.NewPaymentRepository(db)
 	sellerOrderRepo := repository.NewSellerOrderRepository(db)
 	dashboardRepo := repository.NewDashboardRepository(db)
+	reviewRepo := repository.NewReviewRepository(db)
+
+	s3Client := config.NewS3Client(cfg)
+	s3Service := service.NewS3Service(s3Client, cfg)
+	paymentService := service.NewPaymentService(cfg)
+	reviewService := service.NewReviewService(reviewRepo, orderRepo, productRepo, storeRepo, s3Service)
 
 	authService := service.NewAuthService(authRepo, cfg)
 	catalogService := service.NewCatalogService(categoryRepo, productRepo)
 	cartService := service.NewCartService(cartRepo, productRepo)
-	orderService := service.NewOrderService(orderRepo, cartRepo, productRepo)
+	orderService := service.NewOrderService(orderRepo, cartRepo, productRepo, authRepo, paymentService)
 	webhookService := service.NewWebhookService(orderRepo, cfg)
 	userService := service.NewUserService(userRepo)
 	sellerStoreService := service.NewSellerStoreService(storeRepo, userRepo)
-	sellerCatalogService := service.NewSellerCatalogService(storeRepo, categoryRepo, productRepo)
+	sellerCatalogService := service.NewSellerCatalogService(storeRepo, categoryRepo, productRepo, s3Service)
 	sellerPromoService := service.NewSellerPromoService(storeRepo, voucherRepo, paymentRepo)
 	sellerLogisticService := service.NewSellerLogisticService(logisticRepo)
 	sellerOrderService := service.NewSellerOrderService(storeRepo, sellerOrderRepo)
@@ -89,6 +97,7 @@ func main() {
 	handler.NewSellerLogisticHandler(app, sellerLogisticService, userRepo, cfg)
 	handler.NewSellerOrderHandler(app, sellerOrderService, userRepo, cfg)
 	handler.NewSellerDashboardHandler(app, sellerDashboardService, userRepo, cfg)
+	handler.NewReviewHandler(app, reviewService, userRepo, cfg)
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	log.Fatal("[server] ", app.Listen(":"+cfg.Port))

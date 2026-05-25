@@ -15,6 +15,12 @@ type Config struct {
 	DBName     string
 	JWTSecret         string
 	MidtransServerKey string
+	MidtransClientKey string
+	MidtransEnv       string
+	AWSRegion          string
+	AWSAccessKeyID     string
+	AWSSecretAccessKey string
+	S3BucketName       string
 	Port              string
 }
 
@@ -32,6 +38,12 @@ func LoadConfig() *Config {
 		DBName:     getEnv("DB_NAME", "cloudmart"),
 		JWTSecret:         getEnv("JWT_SECRET", ""),
 		MidtransServerKey: getEnv("MIDTRANS_SERVER_KEY", ""),
+		MidtransClientKey: getEnv("MIDTRANS_CLIENT_KEY", ""),
+		MidtransEnv:       getEnv("MIDTRANS_ENV", "sandbox"),
+		AWSRegion:          getEnv("AWS_REGION", "ap-southeast-1"),
+		AWSAccessKeyID:     getEnv("AWS_ACCESS_KEY_ID", ""),
+		AWSSecretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY", ""),
+		S3BucketName:       getEnv("S3_BUCKET_NAME", ""),
 		Port:              getEnv("APP_PORT", "8080"),
 	}
 }

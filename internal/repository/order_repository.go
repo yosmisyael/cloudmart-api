@@ -11,6 +11,9 @@ type OrderRepository interface {
 	FindByID(id, userID uint) (*entity.Order, error)
 	FindByOrderID(orderID uint) (*entity.Order, error)
 	UpdatePaymentStatus(orderID uint, status string) error
+	UpdateSnapToken(orderID uint, snapToken, paymentURL string) error
+	UpdatePaymentMethod(orderID uint, method string) error
+	FindOrderItemByID(itemID uint) (*entity.OrderItem, error)
 }
 
 type orderRepository struct {
@@ -89,4 +92,25 @@ func (r *orderRepository) FindByOrderID(orderID uint) (*entity.Order, error) {
 
 func (r *orderRepository) UpdatePaymentStatus(orderID uint, status string) error {
 	return r.db.Model(&entity.Order{}).Where("id = ?", orderID).Update("payment_status", status).Error
+}
+
+func (r *orderRepository) UpdateSnapToken(orderID uint, snapToken, paymentURL string) error {
+	return r.db.Model(&entity.Order{}).Where("id = ?", orderID).
+		Updates(map[string]interface{}{
+			"snap_token":  snapToken,
+			"payment_url": paymentURL,
+		}).Error
+}
+
+func (r *orderRepository) UpdatePaymentMethod(orderID uint, method string) error {
+	return r.db.Model(&entity.Order{}).Where("id = ?", orderID).Update("payment_method", method).Error
+}
+
+func (r *orderRepository) FindOrderItemByID(itemID uint) (*entity.OrderItem, error) {
+	var item entity.OrderItem
+	err := r.db.Preload("Order").First(&item, itemID).Error
+	if err != nil {
+		return nil, err
+	}
+	return &item, nil
 }

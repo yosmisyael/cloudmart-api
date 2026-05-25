@@ -36,7 +36,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -50,7 +50,7 @@ const docTemplate = `{
                                                 "items": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/definitions/service.CartItemResponse"
+                                                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse"
                                                     }
                                                 }
                                             }
@@ -63,7 +63,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.AddToCartRequest"
+                            "$ref": "#/definitions/internal_handler.AddToCartRequest"
                         }
                     }
                 ],
@@ -102,7 +102,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error or variant not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -156,7 +156,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateCartRequest"
+                            "$ref": "#/definitions/internal_handler.UpdateCartRequest"
                         }
                     }
                 ],
@@ -166,7 +166,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -182,7 +182,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error or item not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -216,7 +216,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -232,7 +232,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid ID or item not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -253,7 +253,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -261,7 +261,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Category"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
                                             }
                                         }
                                     }
@@ -272,7 +272,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -298,7 +298,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LoginRequest"
+                            "$ref": "#/definitions/internal_handler.LoginRequest"
                         }
                     }
                 ],
@@ -308,7 +308,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -332,13 +332,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -365,7 +365,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -373,7 +373,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Order"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                                             }
                                         }
                                     }
@@ -384,7 +384,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -415,7 +415,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CheckoutRequest"
+                            "$ref": "#/definitions/internal_handler.CheckoutRequest"
                         }
                     }
                 ],
@@ -425,13 +425,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Order"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                                         }
                                     }
                                 }
@@ -441,13 +441,111 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "Stock insufficient or transaction failed",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/items/{item_id}/review": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Submit a review for a purchased order item. Order must be settled. One review per item.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Submit product review",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order Item ID",
+                        "name": "item_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Rating (1–5)",
+                        "name": "rating",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Review comment",
+                        "name": "comment",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Product images (jpg/png, max 3MB each, max 5 files)",
+                        "name": "images",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Review video (mp4/mov, max 60MB)",
+                        "name": "video",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Review submitted",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Review"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or file constraint violation",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Order not settled or item not owned",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Review already submitted for this item",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -483,13 +581,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Order"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                                         }
                                     }
                                 }
@@ -499,13 +597,97 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid order ID",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Order not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/pay": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a Midtrans Snap transaction for a pending order and return the payment token and URL",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Initiate payment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment initiated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "payment_url": {
+                                                    "type": "string"
+                                                },
+                                                "snap_token": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid order ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Payment already processed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Payment gateway error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -554,7 +736,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -571,7 +753,7 @@ const docTemplate = `{
                                                 "products": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/definitions/entity.Product"
+                                                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                                                     }
                                                 },
                                                 "total": {
@@ -587,7 +769,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -618,13 +800,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Product"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                                         }
                                     }
                                 }
@@ -634,13 +816,69 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid product ID",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/{id}/reviews": {
+            "get": {
+                "description": "Retrieve all reviews for a product, including images and seller replies",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Get product reviews",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Review list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Review"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -667,13 +905,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/handler.ProfileResponse"
+                                            "$ref": "#/definitions/internal_handler.ProfileResponse"
                                         }
                                     }
                                 }
@@ -683,7 +921,7 @@ const docTemplate = `{
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -710,7 +948,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -718,7 +956,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Address"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
                                             }
                                         }
                                     }
@@ -729,7 +967,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -758,7 +996,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateAddressRequest"
+                            "$ref": "#/definitions/internal_handler.CreateAddressRequest"
                         }
                     }
                 ],
@@ -768,13 +1006,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Address"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
                                         }
                                     }
                                 }
@@ -784,13 +1022,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -816,7 +1054,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.RefreshRequest"
+                            "$ref": "#/definitions/internal_handler.RefreshRequest"
                         }
                     }
                 ],
@@ -826,7 +1064,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -847,13 +1085,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid or expired refresh token",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -879,7 +1117,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.RegisterRequest"
+                            "$ref": "#/definitions/internal_handler.RegisterRequest"
                         }
                     }
                 ],
@@ -889,7 +1127,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -905,13 +1143,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "Email already registered",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -945,25 +1183,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Bank not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -990,7 +1228,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -998,7 +1236,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Category"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
                                             }
                                         }
                                     }
@@ -1009,19 +1247,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1050,7 +1288,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CategoryRequest"
+                            "$ref": "#/definitions/internal_handler.CategoryRequest"
                         }
                     }
                 ],
@@ -1060,13 +1298,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Category"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
                                         }
                                     }
                                 }
@@ -1076,19 +1314,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1126,7 +1364,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CategoryRequest"
+                            "$ref": "#/definitions/internal_handler.CategoryRequest"
                         }
                     }
                 ],
@@ -1136,13 +1374,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Category"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
                                         }
                                     }
                                 }
@@ -1152,25 +1390,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden — default category or not owned",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Category not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1202,25 +1440,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden — default category or not owned",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Category not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1247,13 +1485,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/service.DashboardSummary"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.DashboardSummary"
                                         }
                                     }
                                 }
@@ -1263,19 +1501,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1302,7 +1540,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1310,7 +1548,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Logistic"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic"
                                             }
                                         }
                                     }
@@ -1321,19 +1559,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1362,7 +1600,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LogisticRequest"
+                            "$ref": "#/definitions/internal_handler.LogisticRequest"
                         }
                     }
                 ],
@@ -1372,13 +1610,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Logistic"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic"
                                         }
                                     }
                                 }
@@ -1388,19 +1626,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1438,7 +1676,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LogisticServiceRequest"
+                            "$ref": "#/definitions/internal_handler.LogisticServiceRequest"
                         }
                     }
                 ],
@@ -1448,13 +1686,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.LogisticService"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.LogisticService"
                                         }
                                     }
                                 }
@@ -1464,25 +1702,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Service not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1514,25 +1752,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Service not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1570,7 +1808,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LogisticRequest"
+                            "$ref": "#/definitions/internal_handler.LogisticRequest"
                         }
                     }
                 ],
@@ -1580,13 +1818,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Logistic"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic"
                                         }
                                     }
                                 }
@@ -1596,25 +1834,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Logistic not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1646,25 +1884,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Logistic not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1702,7 +1940,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LogisticServiceRequest"
+                            "$ref": "#/definitions/internal_handler.LogisticServiceRequest"
                         }
                     }
                 ],
@@ -1712,13 +1950,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.LogisticService"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.LogisticService"
                                         }
                                     }
                                 }
@@ -1728,25 +1966,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Logistic not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1781,7 +2019,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1789,7 +2027,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Order"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                                             }
                                         }
                                     }
@@ -1800,19 +2038,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1848,13 +2086,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Order"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                                         }
                                     }
                                 }
@@ -1864,19 +2102,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Order not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1914,7 +2152,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateOrderStatusRequest"
+                            "$ref": "#/definitions/internal_handler.UpdateOrderStatusRequest"
                         }
                     }
                 ],
@@ -1922,31 +2160,31 @@ const docTemplate = `{
                     "200": {
                         "description": "Status updated",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "400": {
                         "description": "Validation error or invalid status",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Order not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -1973,7 +2211,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1981,7 +2219,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.PaymentConfiguration"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentConfiguration"
                                             }
                                         }
                                     }
@@ -1992,19 +2230,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2033,7 +2271,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.PaymentConfigRequest"
+                            "$ref": "#/definitions/internal_handler.PaymentConfigRequest"
                         }
                     }
                 ],
@@ -2043,13 +2281,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.PaymentConfiguration"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentConfiguration"
                                         }
                                     }
                                 }
@@ -2059,19 +2297,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2105,25 +2343,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Payment config not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2161,7 +2399,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.BankRequest"
+                            "$ref": "#/definitions/internal_handler.BankRequest"
                         }
                     }
                 ],
@@ -2171,13 +2409,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.PaymentBank"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentBank"
                                         }
                                     }
                                 }
@@ -2187,25 +2425,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Payment config not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2232,7 +2470,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2240,7 +2478,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Product"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                                             }
                                         }
                                     }
@@ -2251,19 +2489,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2292,7 +2530,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateProductRequest"
+                            "$ref": "#/definitions/internal_handler.CreateProductRequest"
                         }
                     }
                 ],
@@ -2302,13 +2540,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Product"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                                         }
                                     }
                                 }
@@ -2318,19 +2556,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2368,7 +2606,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateProductRequest"
+                            "$ref": "#/definitions/internal_handler.UpdateProductRequest"
                         }
                     }
                 ],
@@ -2378,13 +2616,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Product"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                                         }
                                     }
                                 }
@@ -2394,25 +2632,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2444,25 +2682,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2498,7 +2736,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2506,7 +2744,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.ProductVariant"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
                                             }
                                         }
                                     }
@@ -2517,19 +2755,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2565,7 +2803,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.VariantRequest"
+                            "$ref": "#/definitions/internal_handler.VariantRequest"
                         }
                     }
                 ],
@@ -2575,13 +2813,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.ProductVariant"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
                                         }
                                     }
                                 }
@@ -2591,31 +2829,165 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Product not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "SKU already exists",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/reviews": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all reviews for all products in the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Review"
+                ],
+                "summary": "Get store reviews",
+                "responses": {
+                    "200": {
+                        "description": "Review list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Review"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/reviews/{id}/reply": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Seller posts a single reply to a buyer's review on their product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Review"
+                ],
+                "summary": "Reply to a review",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Reply payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handler.ReplyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reply posted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden — not your product",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Review not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Already replied",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2642,13 +3014,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Store"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store"
                                         }
                                     }
                                 }
@@ -2658,19 +3030,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Store not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2699,7 +3071,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateStoreRequest"
+                            "$ref": "#/definitions/internal_handler.UpdateStoreRequest"
                         }
                     }
                 ],
@@ -2709,13 +3081,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Store"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store"
                                         }
                                     }
                                 }
@@ -2725,25 +3097,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Store not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2772,7 +3144,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateStoreRequest"
+                            "$ref": "#/definitions/internal_handler.CreateStoreRequest"
                         }
                     }
                 ],
@@ -2782,13 +3154,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Store"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store"
                                         }
                                     }
                                 }
@@ -2798,19 +3170,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "409": {
                         "description": "Store already exists",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2848,7 +3220,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.VariantRequest"
+                            "$ref": "#/definitions/internal_handler.VariantRequest"
                         }
                     }
                 ],
@@ -2858,13 +3230,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.ProductVariant"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
                                         }
                                     }
                                 }
@@ -2874,25 +3246,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Variant not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2924,25 +3296,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Variant not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -2969,7 +3341,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2977,7 +3349,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/entity.Voucher"
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher"
                                             }
                                         }
                                     }
@@ -2988,19 +3360,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -3029,7 +3401,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.VoucherRequest"
+                            "$ref": "#/definitions/internal_handler.VoucherRequest"
                         }
                     }
                 ],
@@ -3039,13 +3411,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Voucher"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher"
                                         }
                                     }
                                 }
@@ -3055,19 +3427,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -3105,7 +3477,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.VoucherRequest"
+                            "$ref": "#/definitions/internal_handler.VoucherRequest"
                         }
                     }
                 ],
@@ -3115,13 +3487,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/entity.Voucher"
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher"
                                         }
                                     }
                                 }
@@ -3131,25 +3503,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Voucher not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -3181,25 +3553,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "404": {
                         "description": "Voucher not found",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -3225,7 +3597,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.MidtransNotificationRequest"
+                            "$ref": "#/definitions/internal_handler.MidtransNotificationRequest"
                         }
                     }
                 ],
@@ -3235,7 +3607,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.WebResponse"
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                                 },
                                 {
                                     "type": "object",
@@ -3251,13 +3623,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid input or order ID",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "403": {
                         "description": "Invalid signature",
                         "schema": {
-                            "$ref": "#/definitions/response.WebResponse"
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     }
                 }
@@ -3265,7 +3637,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.Address": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Address": {
             "type": "object",
             "properties": {
                 "additional_information": {
@@ -3304,7 +3676,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Category": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Category": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3321,7 +3693,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Logistic": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3333,12 +3705,12 @@ const docTemplate = `{
                 "services": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.LogisticService"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.LogisticService"
                     }
                 }
             }
         },
-        "entity.LogisticService": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.LogisticService": {
             "type": "object",
             "properties": {
                 "base_price": {
@@ -3355,7 +3727,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Order": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Order": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3376,7 +3748,7 @@ const docTemplate = `{
                 "order_items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.OrderItem"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem"
                     }
                 },
                 "payment_method": {
@@ -3402,11 +3774,14 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.OrderItem": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
+                },
+                "order": {
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order"
                 },
                 "order_id": {
                     "type": "integer"
@@ -3425,7 +3800,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.PaymentBank": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentBank": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -3445,13 +3820,13 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.PaymentConfiguration": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentConfiguration": {
             "type": "object",
             "properties": {
                 "banks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.PaymentBank"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.PaymentBank"
                     }
                 },
                 "id": {
@@ -3465,11 +3840,11 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Product": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Product": {
             "type": "object",
             "properties": {
                 "category": {
-                    "$ref": "#/definitions/entity.Category"
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Category"
                 },
                 "category_id": {
                     "type": "integer"
@@ -3483,11 +3858,14 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "image_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
                 "store": {
-                    "$ref": "#/definitions/entity.Store"
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Store"
                 },
                 "store_id": {
                     "type": "integer"
@@ -3498,12 +3876,12 @@ const docTemplate = `{
                 "variants": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.ProductVariant"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
                     }
                 }
             }
         },
-        "entity.ProductVariant": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant": {
             "type": "object",
             "properties": {
                 "color": {
@@ -3512,11 +3890,14 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "image_url": {
+                    "type": "string"
+                },
                 "price": {
                     "type": "number"
                 },
                 "product": {
-                    "$ref": "#/definitions/entity.Product"
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                 },
                 "product_id": {
                     "type": "integer"
@@ -3532,7 +3913,70 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Store": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Review": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ReviewImage"
+                    }
+                },
+                "order_item": {
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.OrderItem"
+                },
+                "order_item_id": {
+                    "description": "one review per item",
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "description": "1–5",
+                    "type": "integer"
+                },
+                "replied_at": {
+                    "type": "string"
+                },
+                "reply_text": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "video_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.ReviewImage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "review_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Store": {
             "type": "object",
             "properties": {
                 "address_id": {
@@ -3547,7 +3991,7 @@ const docTemplate = `{
                 "products": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.Product"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Product"
                     }
                 },
                 "user_id": {
@@ -3555,13 +3999,13 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.User": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.User": {
             "type": "object",
             "properties": {
                 "addresses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.Address"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
                     }
                 },
                 "created_at": {
@@ -3587,7 +4031,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Voucher": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -3615,12 +4059,77 @@ const docTemplate = `{
                 "users": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.User"
+                        "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.User"
                     }
                 }
             }
         },
-        "handler.AddToCartRequest": {
+        "github_com_yosmisyael_cloudmart-web-service_internal_service.CartItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "subtotal": {
+                    "type": "number"
+                },
+                "variant_color": {
+                    "type": "string"
+                },
+                "variant_id": {
+                    "type": "integer"
+                },
+                "variant_image": {
+                    "type": "string"
+                },
+                "variant_name": {
+                    "type": "string"
+                },
+                "variant_size": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_yosmisyael_cloudmart-web-service_internal_service.DashboardSummary": {
+            "type": "object",
+            "properties": {
+                "low_stock_items": {
+                    "type": "integer"
+                },
+                "pending_orders": {
+                    "type": "integer"
+                },
+                "total_orders": {
+                    "type": "integer"
+                },
+                "total_products": {
+                    "type": "integer"
+                },
+                "total_revenue": {
+                    "type": "number"
+                }
+            }
+        },
+        "github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "errors": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handler.AddToCartRequest": {
             "type": "object",
             "required": [
                 "quantity",
@@ -3636,7 +4145,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.BankRequest": {
+        "internal_handler.BankRequest": {
             "type": "object",
             "required": [
                 "account_id",
@@ -3655,7 +4164,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CategoryRequest": {
+        "internal_handler.CategoryRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3668,7 +4177,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CheckoutRequest": {
+        "internal_handler.CheckoutRequest": {
             "type": "object",
             "required": [
                 "address"
@@ -3680,7 +4189,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CreateAddressRequest": {
+        "internal_handler.CreateAddressRequest": {
             "type": "object",
             "required": [
                 "address",
@@ -3722,7 +4231,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CreateProductRequest": {
+        "internal_handler.CreateProductRequest": {
             "type": "object",
             "required": [
                 "category_id",
@@ -3742,7 +4251,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CreateStoreRequest": {
+        "internal_handler.CreateStoreRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3755,7 +4264,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.LoginRequest": {
+        "internal_handler.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -3770,7 +4279,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.LogisticRequest": {
+        "internal_handler.LogisticRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3781,7 +4290,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.LogisticServiceRequest": {
+        "internal_handler.LogisticServiceRequest": {
             "type": "object",
             "required": [
                 "base_price",
@@ -3796,13 +4305,16 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.MidtransNotificationRequest": {
+        "internal_handler.MidtransNotificationRequest": {
             "type": "object",
             "properties": {
                 "gross_amount": {
                     "type": "string"
                 },
                 "order_id": {
+                    "type": "string"
+                },
+                "payment_type": {
                     "type": "string"
                 },
                 "signature_key": {
@@ -3816,7 +4328,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.PaymentConfigRequest": {
+        "internal_handler.PaymentConfigRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3827,7 +4339,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.ProfileResponse": {
+        "internal_handler.ProfileResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -3847,7 +4359,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.RefreshRequest": {
+        "internal_handler.RefreshRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -3858,7 +4370,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.RegisterRequest": {
+        "internal_handler.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -3882,7 +4394,19 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.UpdateCartRequest": {
+        "internal_handler.ReplyRequest": {
+            "type": "object",
+            "required": [
+                "reply"
+            ],
+            "properties": {
+                "reply": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "internal_handler.UpdateCartRequest": {
             "type": "object",
             "required": [
                 "quantity"
@@ -3894,7 +4418,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.UpdateOrderStatusRequest": {
+        "internal_handler.UpdateOrderStatusRequest": {
             "type": "object",
             "required": [
                 "status"
@@ -3911,7 +4435,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.UpdateProductRequest": {
+        "internal_handler.UpdateProductRequest": {
             "type": "object",
             "required": [
                 "category_id",
@@ -3931,7 +4455,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.UpdateStoreRequest": {
+        "internal_handler.UpdateStoreRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3947,7 +4471,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.VariantRequest": {
+        "internal_handler.VariantRequest": {
             "type": "object",
             "required": [
                 "color",
@@ -3974,7 +4498,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.VoucherRequest": {
+        "internal_handler.VoucherRequest": {
             "type": "object",
             "required": [
                 "amount",
@@ -4002,71 +4526,6 @@ const docTemplate = `{
                         "price",
                         "free_shipping"
                     ]
-                }
-            }
-        },
-        "response.WebResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {},
-                "errors": {},
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "service.CartItemResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "subtotal": {
-                    "type": "number"
-                },
-                "variant_color": {
-                    "type": "string"
-                },
-                "variant_id": {
-                    "type": "integer"
-                },
-                "variant_image": {
-                    "type": "string"
-                },
-                "variant_name": {
-                    "type": "string"
-                },
-                "variant_size": {
-                    "type": "string"
-                }
-            }
-        },
-        "service.DashboardSummary": {
-            "type": "object",
-            "properties": {
-                "low_stock_items": {
-                    "type": "integer"
-                },
-                "pending_orders": {
-                    "type": "integer"
-                },
-                "total_orders": {
-                    "type": "integer"
-                },
-                "total_products": {
-                    "type": "integer"
-                },
-                "total_revenue": {
-                    "type": "number"
                 }
             }
         }

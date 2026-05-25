@@ -15,6 +15,7 @@ type Product struct {
 	CategoryID  uint   `gorm:"not null" json:"category_id"`
 	Name        string `gorm:"type:varchar(255);not null" json:"name"`
 	Description string `gorm:"type:text" json:"description"`
+	ImageURL    string `gorm:"type:varchar(500)" json:"image_url"`
 
 	Store    Store            `gorm:"foreignKey:StoreID" json:"store"`
 	Category Category         `gorm:"foreignKey:CategoryID" json:"category"`
@@ -31,7 +32,8 @@ type ProductVariant struct {
 	Color     string  `gorm:"type:varchar(50);not null" json:"color"`
 	Size      string  `gorm:"type:varchar(50);not null" json:"size"`
 	Price     float64 `gorm:"type:decimal(10,2);not null" json:"price"`
-	Stock     int     `gorm:"not null;default:0" json:"stock"`
+	Stock    int    `gorm:"not null;default:0" json:"stock"`
+	ImageURL string `gorm:"type:varchar(500)" json:"image_url"`
 
 	Product Product `gorm:"foreignKey:ProductID" json:"product"`
 }

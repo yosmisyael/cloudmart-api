@@ -14,19 +14,24 @@ type OrderService interface {
 	Checkout(userID uint, address string) (*entity.Order, error)
 	GetOrders(userID uint) ([]entity.Order, error)
 	GetOrderByID(id, userID uint) (*entity.Order, error)
+	InitiatePayment(userID, orderID uint) (*entity.Order, error)
 }
 
 type orderService struct {
 	orderRepo   repository.OrderRepository
 	cartRepo    repository.CartRepository
 	productRepo repository.ProductRepository
+	authRepo    repository.AuthRepository
+	paymentSvc  PaymentService
 }
 
-func NewOrderService(orderRepo repository.OrderRepository, cartRepo repository.CartRepository, productRepo repository.ProductRepository) OrderService {
+func NewOrderService(orderRepo repository.OrderRepository, cartRepo repository.CartRepository, productRepo repository.ProductRepository, authRepo repository.AuthRepository, paymentSvc PaymentService) OrderService {
 	return &orderService{
 		orderRepo:   orderRepo,
 		cartRepo:    cartRepo,
 		productRepo: productRepo,
+		authRepo:    authRepo,
+		paymentSvc:  paymentSvc,
 	}
 }
 
@@ -99,4 +104,34 @@ func (s *orderService) sendOrderNotification(orderID, userID uint) {
 	time.Sleep(2 * time.Second)
 
 	log.Println("Notification sent successfully")
+}
+
+func (s *orderService) InitiatePayment(userID, orderID uint) (*entity.Order, error) {
+	order, err := s.orderRepo.FindByID(orderID, userID)
+	if err != nil {
+		return nil, errors.New("pesanan tidak ditemukan")
+	}
+
+	if order.PaymentStatus != "pending" {
+		return nil, errors.New("pembayaran sudah diproses")
+	}
+
+	user, err := s.authRepo.FindByID(userID)
+	if err != nil {
+		return nil, errors.New("user tidak ditemukan")
+	}
+
+	snapToken, paymentURL, err := s.paymentSvc.CreateSnapTransaction(order, user)
+	if err != nil {
+		return nil, errors.New("gagal membuat transaksi pembayaran")
+	}
+
+	if err := s.orderRepo.UpdateSnapToken(orderID, snapToken, paymentURL); err != nil {
+		return nil, errors.New("gagal menyimpan token pembayaran")
+	}
+
+	order.SnapToken = &snapToken
+	order.PaymentURL = &paymentURL
+
+	return order, nil
 }
