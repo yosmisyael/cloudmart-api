@@ -9,6 +9,7 @@ type SellerOrderRepository interface {
 	FindByStoreID(storeID uint, status string) ([]entity.Order, error)
 	FindOrderByID(orderID uint) (*entity.Order, error)
 	UpdateOrderStatus(orderID uint, status string) error
+	UpdateShippingStatus(orderID uint, status string) error
 }
 
 type sellerOrderRepository struct {
@@ -47,4 +48,8 @@ func (r *sellerOrderRepository) FindOrderByID(orderID uint) (*entity.Order, erro
 
 func (r *sellerOrderRepository) UpdateOrderStatus(orderID uint, status string) error {
 	return r.db.Model(&entity.Order{}).Where("id = ?", orderID).Update("payment_status", status).Error
+}
+
+func (r *sellerOrderRepository) UpdateShippingStatus(orderID uint, status string) error {
+	return r.db.Model(&entity.Order{}).Where("id = ?", orderID).Update("shipping_status", status).Error
 }

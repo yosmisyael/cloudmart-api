@@ -333,6 +333,47 @@
                 }
             }
         },
+        "/api/logistics": {
+            "get": {
+                "description": "Retrieve all logistics providers and their shipping service options with pricing",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Get available logistics",
+                "responses": {
+                    "200": {
+                        "description": "Logistic list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/orders": {
             "get": {
                 "security": [
@@ -386,7 +427,7 @@
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create an order from the user's cart, validate stock, decrement inventory, and clear cart atomically",
+                "description": "Create an order from cart with shipping selection, optional voucher, and full cost calculation",
                 "consumes": [
                     "application/json"
                 ],
@@ -399,7 +440,7 @@
                 "summary": "Checkout order",
                 "parameters": [
                     {
-                        "description": "Shipping address",
+                        "description": "Checkout payload",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -428,13 +469,94 @@
                         }
                     },
                     "400": {
-                        "description": "Validation error",
+                        "description": "Validation error or invalid logistic",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Address or logistic not found",
                         "schema": {
                             "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
                     },
                     "409": {
-                        "description": "Stock insufficient or transaction failed",
+                        "description": "Stock insufficient or voucher invalid",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/estimate": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Preview the full cost breakdown for cart contents with a selected logistic and optional voucher, without creating an order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Estimate order cost",
+                "parameters": [
+                    {
+                        "description": "Estimate payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handler.CheckoutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cost estimate",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.OrderEstimate"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Logistic or voucher not found",
                         "schema": {
                             "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
@@ -585,6 +707,58 @@
                     },
                     "400": {
                         "description": "Invalid order ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/cancel": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Cancel a pending order and restock all variants atomically",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Cancel order",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order cancelled",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Order cannot be cancelled — not pending",
                         "schema": {
                             "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
@@ -914,6 +1088,67 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update the authenticated user's name and phone number",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update profile",
+                "parameters": [
+                    {
+                        "description": "Profile payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handler.UpdateProfileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
             }
         },
         "/api/profile/addresses": {
@@ -1016,6 +1251,247 @@
                     },
                     "500": {
                         "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/addresses/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a saved shipping address for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Address payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handler.UpdateAddressRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address updated",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Not your address",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a saved shipping address for the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address deleted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Not your address",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/addresses/{id}/default": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Mark an address as the user's default shipping address",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Set default address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default address set",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Not your address",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/password": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Change the authenticated user's password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Change password",
+                "parameters": [
+                    {
+                        "description": "Password payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handler.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password changed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong current password",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
                         "schema": {
                             "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
@@ -3566,6 +4042,165 @@
                 }
             }
         },
+        "/api/vouchers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all active, non-expired vouchers for a specific store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Browse available vouchers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Store ID",
+                        "name": "store_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voucher list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Missing store_id",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vouchers/mine": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all vouchers claimed by the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Get my vouchers",
+                "responses": {
+                    "200": {
+                        "description": "My voucher list",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vouchers/{code}/claim": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a voucher to the authenticated user's account by voucher code",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Claim a voucher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Voucher code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voucher claimed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found or expired",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Already claimed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/webhooks/midtrans": {
             "post": {
                 "description": "Receive asynchronous payment status notification from Midtrans and update order payment status",
@@ -3643,6 +4278,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "is_default": {
+                    "type": "boolean"
                 },
                 "phone": {
                     "type": "string"
@@ -3752,6 +4390,9 @@
                 "shipping_address": {
                     "type": "string"
                 },
+                "shipping_status": {
+                    "type": "string"
+                },
                 "snap_token": {
                     "type": "string"
                 },
@@ -3780,6 +4421,9 @@
                 },
                 "quantity": {
                     "type": "integer"
+                },
+                "variant": {
+                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant"
                 },
                 "variant_details": {
                     "type": "string"
@@ -4026,6 +4670,9 @@
                 "amount": {
                     "type": "number"
                 },
+                "code": {
+                    "type": "string"
+                },
                 "expired_at": {
                     "type": "string"
                 },
@@ -4105,6 +4752,26 @@
                 }
             }
         },
+        "github_com_yosmisyael_cloudmart-web-service_internal_service.OrderEstimate": {
+            "type": "object",
+            "properties": {
+                "discount": {
+                    "type": "number"
+                },
+                "grand_total": {
+                    "type": "number"
+                },
+                "shipping_fee": {
+                    "type": "number"
+                },
+                "subtotal": {
+                    "type": "number"
+                },
+                "voucher_name": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse": {
             "type": "object",
             "properties": {
@@ -4166,15 +4833,39 @@
                 }
             }
         },
+        "internal_handler.ChangePasswordRequest": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "old_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "old_password": {
+                    "type": "string"
+                }
+            }
+        },
         "internal_handler.CheckoutRequest": {
             "type": "object",
             "required": [
-                "address"
+                "logistic_service_id"
             ],
             "properties": {
                 "address": {
-                    "type": "string",
-                    "minLength": 10
+                    "type": "string"
+                },
+                "address_id": {
+                    "type": "integer"
+                },
+                "logistic_service_id": {
+                    "type": "integer"
+                },
+                "voucher_code": {
+                    "type": "string"
                 }
             }
         },
@@ -4395,6 +5086,48 @@
                 }
             }
         },
+        "internal_handler.UpdateAddressRequest": {
+            "type": "object",
+            "required": [
+                "address",
+                "city",
+                "country",
+                "phone",
+                "postal_code",
+                "recipient",
+                "state",
+                "type"
+            ],
+            "properties": {
+                "additional_information": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "postal_code": {
+                    "type": "string"
+                },
+                "recipient": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "internal_handler.UpdateCartRequest": {
             "type": "object",
             "required": [
@@ -4418,8 +5151,7 @@
                     "enum": [
                         "processing",
                         "shipped",
-                        "delivered",
-                        "cancelled"
+                        "delivered"
                     ]
                 }
             }
@@ -4441,6 +5173,22 @@
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 3
+                }
+            }
+        },
+        "internal_handler.UpdateProfileRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "phone"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 2
+                },
+                "phone": {
+                    "type": "string"
                 }
             }
         },

@@ -11,6 +11,8 @@ definitions:
         type: string
       id:
         type: integer
+      is_default:
+        type: boolean
       phone:
         type: string
       postal_code:
@@ -82,6 +84,8 @@ definitions:
         type: string
       shipping_address:
         type: string
+      shipping_status:
+        type: string
       snap_token:
         type: string
       updated_at:
@@ -101,6 +105,8 @@ definitions:
         type: number
       quantity:
         type: integer
+      variant:
+        $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.ProductVariant'
       variant_details:
         type: string
       variant_id:
@@ -262,6 +268,8 @@ definitions:
     properties:
       amount:
         type: number
+      code:
+        type: string
       expired_at:
         type: string
       id:
@@ -314,6 +322,19 @@ definitions:
       total_revenue:
         type: number
     type: object
+  github_com_yosmisyael_cloudmart-web-service_internal_service.OrderEstimate:
+    properties:
+      discount:
+        type: number
+      grand_total:
+        type: number
+      shipping_fee:
+        type: number
+      subtotal:
+        type: number
+      voucher_name:
+        type: string
+    type: object
   github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse:
     properties:
       code:
@@ -356,13 +377,29 @@ definitions:
     required:
     - name
     type: object
+  internal_handler.ChangePasswordRequest:
+    properties:
+      new_password:
+        minLength: 6
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
   internal_handler.CheckoutRequest:
     properties:
       address:
-        minLength: 10
+        type: string
+      address_id:
+        type: integer
+      logistic_service_id:
+        type: integer
+      voucher_code:
         type: string
     required:
-    - address
+    - logistic_service_id
     type: object
   internal_handler.CreateAddressRequest:
     properties:
@@ -511,6 +548,36 @@ definitions:
     required:
     - reply
     type: object
+  internal_handler.UpdateAddressRequest:
+    properties:
+      additional_information:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      phone:
+        type: string
+      postal_code:
+        type: string
+      recipient:
+        type: string
+      state:
+        type: string
+      type:
+        type: string
+    required:
+    - address
+    - city
+    - country
+    - phone
+    - postal_code
+    - recipient
+    - state
+    - type
+    type: object
   internal_handler.UpdateCartRequest:
     properties:
       quantity:
@@ -526,7 +593,6 @@ definitions:
         - processing
         - shipped
         - delivered
-        - cancelled
         type: string
     required:
     - status
@@ -544,6 +610,17 @@ definitions:
     required:
     - category_id
     - name
+    type: object
+  internal_handler.UpdateProfileRequest:
+    properties:
+      name:
+        minLength: 2
+        type: string
+      phone:
+        type: string
+    required:
+    - name
+    - phone
     type: object
   internal_handler.UpdateStoreRequest:
     properties:
@@ -795,6 +872,31 @@ paths:
       summary: User login
       tags:
       - Auth
+  /api/logistics:
+    get:
+      description: Retrieve all logistics providers and their shipping service options
+        with pricing
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logistic list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Logistic'
+                  type: array
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      summary: Get available logistics
+      tags:
+      - Catalog
   /api/orders:
     get:
       description: Retrieve the authenticated user's order history
@@ -855,6 +957,39 @@ paths:
       summary: Get order detail
       tags:
       - Order
+  /api/orders/{id}/cancel:
+    post:
+      description: Cancel a pending order and restock all variants atomically
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order cancelled
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Order cannot be cancelled — not pending
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel order
+      tags:
+      - Order
   /api/orders/{id}/pay:
     post:
       description: Create a Midtrans Snap transaction for a pending order and return
@@ -911,10 +1046,10 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create an order from the user's cart, validate stock, decrement
-        inventory, and clear cart atomically
+      description: Create an order from cart with shipping selection, optional voucher,
+        and full cost calculation
       parameters:
-      - description: Shipping address
+      - description: Checkout payload
         in: body
         name: request
         required: true
@@ -933,16 +1068,66 @@ paths:
                   $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Order'
               type: object
         "400":
-          description: Validation error
+          description: Validation error or invalid logistic
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Address or logistic not found
           schema:
             $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
         "409":
-          description: Stock insufficient or transaction failed
+          description: Stock insufficient or voucher invalid
           schema:
             $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
       security:
       - BearerAuth: []
       summary: Checkout order
+      tags:
+      - Order
+  /api/orders/estimate:
+    post:
+      consumes:
+      - application/json
+      description: Preview the full cost breakdown for cart contents with a selected
+        logistic and optional voucher, without creating an order
+      parameters:
+      - description: Estimate payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.CheckoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cost estimate
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_service.OrderEstimate'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Logistic or voucher not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Estimate order cost
       tags:
       - Order
   /api/orders/items/{item_id}/review:
@@ -1152,6 +1337,42 @@ paths:
       summary: Get user profile
       tags:
       - Profile
+    put:
+      consumes:
+      - application/json
+      description: Update the authenticated user's name and phone number
+      parameters:
+      - description: Profile payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile updated
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.User'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Update profile
+      tags:
+      - Profile
   /api/profile/addresses:
     get:
       description: Retrieve all saved shipping addresses for the authenticated user
@@ -1212,6 +1433,157 @@ paths:
       security:
       - BearerAuth: []
       summary: Add a new address
+      tags:
+      - Profile
+  /api/profile/addresses/{id}:
+    delete:
+      description: Delete a saved shipping address for the authenticated user
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Address deleted
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Not your address
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Address not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete address
+      tags:
+      - Profile
+    put:
+      consumes:
+      - application/json
+      description: Update a saved shipping address for the authenticated user
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Address payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.UpdateAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Address updated
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Not your address
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Address not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Update address
+      tags:
+      - Profile
+  /api/profile/addresses/{id}/default:
+    post:
+      description: Mark an address as the user's default shipping address
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Default address set
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Not your address
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Address not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Set default address
+      tags:
+      - Profile
+  /api/profile/password:
+    put:
+      consumes:
+      - application/json
+      description: Change the authenticated user's password
+      parameters:
+      - description: Password payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Password changed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Wrong current password
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Change password
       tags:
       - Profile
   /api/refresh:
@@ -2769,6 +3141,101 @@ paths:
       summary: Update voucher
       tags:
       - Seller - Promo
+  /api/vouchers:
+    get:
+      description: Retrieve all active, non-expired vouchers for a specific store
+      parameters:
+      - description: Store ID
+        in: query
+        name: store_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Voucher list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher'
+                  type: array
+              type: object
+        "400":
+          description: Missing store_id
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Browse available vouchers
+      tags:
+      - Voucher
+  /api/vouchers/{code}/claim:
+    post:
+      description: Add a voucher to the authenticated user's account by voucher code
+      parameters:
+      - description: Voucher code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Voucher claimed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Voucher not found or expired
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "409":
+          description: Already claimed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Claim a voucher
+      tags:
+      - Voucher
+  /api/vouchers/mine:
+    get:
+      description: Retrieve all vouchers claimed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: My voucher list
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Voucher'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my vouchers
+      tags:
+      - Voucher
   /api/webhooks/midtrans:
     post:
       consumes:

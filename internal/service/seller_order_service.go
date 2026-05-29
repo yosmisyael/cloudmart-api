@@ -58,7 +58,6 @@ func (s *sellerOrderService) UpdateOrderStatus(userID, orderID uint, status stri
 		"processing": true,
 		"shipped":    true,
 		"delivered":  true,
-		"cancelled":  true,
 	}
 
 	if !validStatuses[status] {
@@ -70,7 +69,7 @@ func (s *sellerOrderService) UpdateOrderStatus(userID, orderID uint, status stri
 		return errors.New("pesanan tidak ditemukan")
 	}
 
-	if err := s.orderRepo.UpdateOrderStatus(orderID, status); err != nil {
+	if err := s.orderRepo.UpdateShippingStatus(orderID, status); err != nil {
 		return errors.New("gagal mengupdate status pesanan")
 	}
 	return nil

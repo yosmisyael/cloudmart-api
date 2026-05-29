@@ -14,6 +14,7 @@ type OrderRepository interface {
 	UpdateSnapToken(orderID uint, snapToken, paymentURL string) error
 	UpdatePaymentMethod(orderID uint, method string) error
 	FindOrderItemByID(itemID uint) (*entity.OrderItem, error)
+	CancelOrder(orderID uint) error
 }
 
 type orderRepository struct {
@@ -65,6 +66,8 @@ func (r *orderRepository) FindByUserID(userID uint) ([]entity.Order, error) {
 	var orders []entity.Order
 	err := r.db.Where("user_id = ?", userID).
 		Preload("OrderItems").
+		Preload("OrderItems.Variant").
+		Preload("OrderItems.Variant.Product").
 		Order("created_at DESC").
 		Find(&orders).Error
 	return orders, err
@@ -113,4 +116,28 @@ func (r *orderRepository) FindOrderItemByID(itemID uint) (*entity.OrderItem, err
 		return nil, err
 	}
 	return &item, nil
+}
+
+func (r *orderRepository) CancelOrder(orderID uint) error {
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		var items []entity.OrderItem
+		if err := tx.Where("order_id = ?", orderID).Find(&items).Error; err != nil {
+			return err
+		}
+
+		for _, item := range items {
+			if err := tx.Model(&entity.ProductVariant{}).
+				Where("id = ?", item.VariantID).
+				Update("stock", gorm.Expr("stock + ?", item.Quantity)).Error; err != nil {
+				return err
+			}
+		}
+
+		if err := tx.Model(&entity.Order{}).Where("id = ?", orderID).
+			Update("payment_status", "cancel").Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }

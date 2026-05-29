@@ -27,6 +27,7 @@ type Address struct {
 	Recipient             string  `gorm:"type:varchar(100);not null" json:"recipient"`
 	Type                  string  `gorm:"type:varchar(50);not null" json:"type"` // e.g., "home", "office"
 	AdditionalInformation *string `gorm:"type:text" json:"additional_information"`
+	IsDefault             bool    `gorm:"default:false" json:"is_default"`
 }
 
 type Store struct {

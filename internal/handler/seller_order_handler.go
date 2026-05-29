@@ -18,7 +18,7 @@ type SellerOrderHandler struct {
 }
 
 type UpdateOrderStatusRequest struct {
-	Status string `json:"status" validate:"required,oneof=processing shipped delivered cancelled"`
+	Status string `json:"status" validate:"required,oneof=processing shipped delivered"`
 }
 
 func NewSellerOrderHandler(router fiber.Router, svc service.SellerOrderService, userRepo repository.UserRepository, cfg *config.Config) {

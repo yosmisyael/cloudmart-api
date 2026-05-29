@@ -70,11 +70,12 @@ func main() {
 	reviewService := service.NewReviewService(reviewRepo, orderRepo, productRepo, storeRepo, s3Service)
 
 	authService := service.NewAuthService(authRepo, cfg)
-	catalogService := service.NewCatalogService(categoryRepo, productRepo)
+	catalogService := service.NewCatalogService(categoryRepo, productRepo, logisticRepo)
 	cartService := service.NewCartService(cartRepo, productRepo)
-	orderService := service.NewOrderService(orderRepo, cartRepo, productRepo, authRepo, paymentService)
+	orderService := service.NewOrderService(orderRepo, cartRepo, productRepo, authRepo, userRepo, logisticRepo, voucherRepo, paymentService)
 	webhookService := service.NewWebhookService(orderRepo, cfg)
 	userService := service.NewUserService(userRepo)
+	voucherService := service.NewVoucherService(voucherRepo, storeRepo)
 	sellerStoreService := service.NewSellerStoreService(storeRepo, userRepo)
 	sellerCatalogService := service.NewSellerCatalogService(storeRepo, categoryRepo, productRepo, s3Service)
 	sellerPromoService := service.NewSellerPromoService(storeRepo, voucherRepo, paymentRepo)
@@ -87,6 +88,8 @@ func main() {
 
 	handler.NewAuthHandler(app, authService)
 	handler.NewCatalogHandler(app, catalogService)
+	handler.NewLogisticHandler(app, catalogService)
+	handler.NewVoucherHandler(app, voucherService, cfg)
 	handler.NewCartHandler(app, cartService, cfg)
 	handler.NewOrderHandler(app, orderService, cfg)
 	handler.NewWebhookHandler(app, webhookService)

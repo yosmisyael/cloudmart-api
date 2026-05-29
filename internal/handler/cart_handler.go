@@ -95,9 +95,13 @@ func (h *CartHandler) AddToCart(c *fiber.Ctx) error {
 	}
 
 	if err := h.cartService.AddToCart(userID, req.VariantID, req.Quantity); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
-			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
+		status := fiber.StatusBadRequest
+		if err.Error() == "stok habis" || len(err.Error()) > 20 && err.Error()[:4] == "stok" {
+			status = fiber.StatusConflict
+		}
+		return c.Status(status).JSON(response.WebResponse{
+			Code:   status,
+			Status: "Error",
 			Errors: err.Error(),
 		})
 	}

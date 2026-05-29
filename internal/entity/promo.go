@@ -4,6 +4,7 @@ import "time"
 
 type Voucher struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	Code      string    `gorm:"type:varchar(50);uniqueIndex;not null" json:"code"`
 	StoreID   uint      `gorm:"not null" json:"store_id"`
 	Name      string    `gorm:"type:varchar(100);not null" json:"name"`
 	Type      string    `gorm:"type:varchar(50);not null" json:"type"` // "percentage", "price", "free_shipping",

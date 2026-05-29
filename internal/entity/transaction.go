@@ -17,6 +17,7 @@ type Order struct {
 	GrandTotal        float64 `gorm:"type:decimal(15,2);not null" json:"grand_total"`
 	PaymentMethod     *string `gorm:"type:varchar(50)" json:"payment_method"`
 	PaymentStatus     string  `gorm:"type:varchar(20);default:'pending'" json:"payment_status"`
+	ShippingStatus    string  `gorm:"type:varchar(20);default:'pending'" json:"shipping_status"`
 	ShippingAddress   string  `gorm:"type:text;not null" json:"shipping_address"`
 	LogisticService   string  `gorm:"type:varchar(100)" json:"logistic_service"`
 	LogisticVoucherID *uint   `json:"logistic_voucher_id"`
@@ -34,6 +35,7 @@ type OrderItem struct {
 	ID             uint    `gorm:"primaryKey;autoIncrement" json:"id"`
 	OrderID        uint    `gorm:"not null" json:"order_id"`
 	VariantID      uint    `gorm:"not null" json:"variant_id"`
+	Variant        ProductVariant `gorm:"foreignKey:VariantID" json:"variant,omitempty"`
 	VariantDetails string  `gorm:"type:text;not null" json:"variant_details"`
 	Price          float64 `gorm:"type:decimal(10,2);not null" json:"price"`
 	Quantity       int     `gorm:"not null" json:"quantity"`

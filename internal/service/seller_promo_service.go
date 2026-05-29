@@ -9,6 +9,7 @@ import (
 )
 
 type VoucherInput struct {
+	Code      string
 	Name      string
 	Type      string
 	Amount    float64
@@ -66,6 +67,7 @@ func (s *sellerPromoService) CreateVoucher(userID uint, req VoucherInput) (*enti
 
 	voucher := &entity.Voucher{
 		StoreID:   store.ID,
+		Code:      req.Code,
 		Name:      req.Name,
 		Type:      req.Type,
 		Amount:    req.Amount,
@@ -94,6 +96,7 @@ func (s *sellerPromoService) UpdateVoucher(userID, voucherID uint, req VoucherIn
 		return nil, errors.New("akses ditolak")
 	}
 
+	voucher.Code = req.Code
 	voucher.Name = req.Name
 	voucher.Type = req.Type
 	voucher.Amount = req.Amount
