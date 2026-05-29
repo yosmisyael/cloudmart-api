@@ -45,6 +45,9 @@ func (s *paymentService) CreateSnapTransaction(order *entity.Order, user *entity
 			Email: user.Email,
 			Phone: user.Phone,
 		},
+		Callbacks: &snap.Callbacks{
+			Finish: "http://localhost:5173/payment-success",
+		},
 	}
 
 	resp, err := snapClient.CreateTransaction(snapReq)
