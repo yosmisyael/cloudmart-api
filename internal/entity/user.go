@@ -10,6 +10,7 @@ type User struct {
 	Phone        string    `gorm:"type:varchar(20);not null" json:"phone"`
 	Role         string    `gorm:"type:varchar(20);default: 'customer'" json:"role"`
 	RefreshToken string    `gorm:"type:text" json:"-"`
+	AvatarURL    string    `gorm:"type:varchar(500)" json:"avatar_url"`
 	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	Addresses    []Address `gorm:"foreignKey:UserID" json:"addresses,omitempty"`
@@ -35,6 +36,7 @@ type Store struct {
 	UserID    uint   `gorm:"uniqueIndex;not null" json:"user_id"`
 	AddressID *uint  `json:"address_id"`
 	Name      string `gorm:"type:varchar(100);not null" json:"name"`
+	LogoURL   string `gorm:"type:varchar(500)" json:"logo_url"`
 
 	Products []Product `gorm:"foreignKey:StoreID" json:"products,omitempty"`
 }

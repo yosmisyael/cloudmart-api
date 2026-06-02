@@ -1453,6 +1453,113 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/profile/avatar": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Upload or replace the profile avatar for the authenticated user",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Upload avatar",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Avatar image (jpg/png, max 3MB)",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Avatar uploaded",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid file",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Upload failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove the profile avatar for the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete avatar",
+                "responses": {
+                    "200": {
+                        "description": "Avatar deleted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/profile/password": {
             "put": {
                 "security": [
@@ -3182,6 +3289,147 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/seller/products/{id}/image": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Upload or replace the main image for a product owned by the authenticated seller",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Upload product image",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file (jpg/png, max 5MB)",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image uploaded",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid file",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Upload failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove the main image of a product owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Delete product image",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/seller/products/{id}/variants": {
             "get": {
                 "security": [
@@ -3664,6 +3912,125 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/seller/store/logo": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Upload or replace the logo for the authenticated seller's store",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Store"
+                ],
+                "summary": "Upload store logo",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Logo image (jpg/png, max 5MB)",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logo uploaded",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid file",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Upload failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove the logo of the authenticated seller's store",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Store"
+                ],
+                "summary": "Delete store logo",
+                "responses": {
+                    "200": {
+                        "description": "Logo deleted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Store not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/seller/variants/{id}": {
             "put": {
                 "security": [
@@ -3771,6 +4138,147 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "Deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Variant not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/seller/variants/{id}/image": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Upload or replace the image for a product variant owned by the authenticated seller",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Upload variant image",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Variant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file (jpg/png, max 5MB)",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image uploaded",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid file",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Variant not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Upload failed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove the image of a product variant owned by the authenticated seller",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Seller - Catalog"
+                ],
+                "summary": "Delete variant image",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Variant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted",
                         "schema": {
                             "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse"
                         }
@@ -4629,6 +5137,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "logo_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -4651,6 +5162,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address"
                     }
+                },
+                "avatar_url": {
+                    "type": "string"
                 },
                 "created_at": {
                     "type": "string"
@@ -5033,6 +5547,9 @@ const docTemplate = `{
         "internal_handler.ProfileResponse": {
             "type": "object",
             "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },

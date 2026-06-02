@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 
 	"github.com/yosmisyael/cloudmart-web-service/internal/entity"
@@ -17,14 +18,17 @@ type UserService interface {
 	SetDefaultAddress(addressID, userID uint) error
 	UpdateProfile(userID uint, name, phone string) error
 	ChangePassword(userID uint, oldPassword, newPassword string) error
+	UploadAvatar(ctx context.Context, userID uint, data []byte, filename, contentType string) (string, error)
+	DeleteAvatar(ctx context.Context, userID uint) error
 }
 
 type userService struct {
 	userRepo repository.UserRepository
+	s3Svc    S3Service
 }
 
-func NewUserService(userRepo repository.UserRepository) UserService {
-	return &userService{userRepo: userRepo}
+func NewUserService(userRepo repository.UserRepository, s3Svc S3Service) UserService {
+	return &userService{userRepo: userRepo, s3Svc: s3Svc}
 }
 
 func (s *userService) GetProfile(userID uint) (*entity.User, error) {
@@ -72,4 +76,42 @@ func (s *userService) ChangePassword(userID uint, oldPassword, newPassword strin
 	}
 
 	return s.userRepo.UpdatePassword(userID, string(hashedPassword))
+}
+
+func (s *userService) UploadAvatar(ctx context.Context, userID uint, data []byte, filename, contentType string) (string, error) {
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil {
+		return "", errors.New("user tidak ditemukan")
+	}
+
+	if user.AvatarURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(user.AvatarURL))
+	}
+
+	url, err := s.s3Svc.UploadFile(ctx, "avatars", filename, data, contentType)
+	if err != nil {
+		return "", errors.New("gagal upload avatar")
+	}
+
+	if err := s.userRepo.UpdateAvatarURL(userID, url); err != nil {
+		// DB failed — roll back the S3 upload
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(url))
+		return "", errors.New("gagal update url avatar")
+	}
+
+	return url, nil
+}
+
+func (s *userService) DeleteAvatar(ctx context.Context, userID uint) error {
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil {
+		return errors.New("user tidak ditemukan")
+	}
+
+	if user.AvatarURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(user.AvatarURL))
+		_ = s.userRepo.UpdateAvatarURL(userID, "")
+	}
+
+	return nil
 }

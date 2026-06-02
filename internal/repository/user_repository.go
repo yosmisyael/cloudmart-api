@@ -15,6 +15,7 @@ type UserRepository interface {
 	UpdateRole(userID uint, role string) error
 	UpdateProfile(userID uint, name, phone string) error
 	UpdatePassword(userID uint, hashedPassword string) error
+	UpdateAvatarURL(userID uint, url string) error
 }
 
 type userRepository struct {
@@ -83,4 +84,8 @@ func (r *userRepository) UpdateProfile(userID uint, name, phone string) error {
 
 func (r *userRepository) UpdatePassword(userID uint, hashedPassword string) error {
 	return r.db.Model(&entity.User{}).Where("id = ?", userID).Update("password", hashedPassword).Error
+}
+
+func (r *userRepository) UpdateAvatarURL(userID uint, url string) error {
+	return r.db.Model(&entity.User{}).Where("id = ?", userID).Update("avatar_url", url).Error
 }

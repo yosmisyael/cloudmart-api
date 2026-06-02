@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"io"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,8 +10,8 @@ import (
 	"github.com/yosmisyael/cloudmart-web-service/internal/middleware"
 	"github.com/yosmisyael/cloudmart-web-service/internal/service"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/response"
+	"github.com/yosmisyael/cloudmart-web-service/pkg/upload"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/validator"
-	_ "github.com/yosmisyael/cloudmart-web-service/internal/entity"
 )
 
 type ProfileHandler struct {
@@ -28,14 +29,17 @@ func NewProfileHandler(router fiber.Router, userService service.UserService, cfg
 	profile.Put("/addresses/:id", handler.UpdateAddress)
 	profile.Delete("/addresses/:id", handler.DeleteAddress)
 	profile.Post("/addresses/:id/default", handler.SetDefaultAddress)
+	profile.Post("/avatar", handler.UploadAvatar)
+	profile.Delete("/avatar", handler.DeleteAvatar)
 }
 
 type ProfileResponse struct {
-	ID    uint   `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
-	Role  string `json:"role"`
+	ID        uint   `json:"id"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+	Role      string `json:"role"`
+	AvatarURL string `json:"avatar_url"`
 }
 
 type CreateAddressRequest struct {
@@ -93,11 +97,12 @@ func (h *ProfileHandler) GetProfile(c *fiber.Ctx) error {
 	}
 
 	profileResp := ProfileResponse{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-		Phone: user.Phone,
-		Role:  user.Role,
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		Role:      user.Role,
+		AvatarURL: user.AvatarURL,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
@@ -279,7 +284,7 @@ func (h *ProfileHandler) ChangePassword(c *fiber.Ctx) error {
 		} else if err.Error() == "user tidak ditemukan" {
 			status = fiber.StatusNotFound
 		}
-		
+
 		return c.Status(status).JSON(response.WebResponse{
 			Code:   status,
 			Status: "Error",
@@ -429,7 +434,7 @@ func (h *ProfileHandler) SetDefaultAddress(c *fiber.Ctx) error {
 		if err.Error() == "record not found" {
 			status = fiber.StatusNotFound
 		}
-		
+
 		return c.Status(status).JSON(response.WebResponse{
 			Code:   status,
 			Status: "Error",
@@ -441,5 +446,86 @@ func (h *ProfileHandler) SetDefaultAddress(c *fiber.Ctx) error {
 		Code:   fiber.StatusOK,
 		Status: "OK",
 		Data:   "Alamat utama berhasil diatur",
+	})
+}
+
+// @Summary     Upload avatar
+// @Description Upload or replace the profile avatar for the authenticated user
+// @Tags        Profile
+// @Accept      multipart/form-data
+// @Produce     json
+// @Security    BearerAuth
+// @Param       image formData file true "Avatar image (jpg/png, max 3MB)"
+// @Success     200 {object} response.WebResponse{data=object{url=string}} "Avatar uploaded"
+// @Failure     400 {object} response.WebResponse "Invalid file"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     500 {object} response.WebResponse "Upload failed"
+// @Router      /api/profile/avatar [post]
+func (h *ProfileHandler) UploadAvatar(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "File gambar diperlukan",
+		})
+	}
+
+	if err := upload.ValidateImage(file, 3); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: err.Error(),
+		})
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membuka file",
+		})
+	}
+	defer f.Close()
+
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membaca file",
+		})
+	}
+
+	filename := upload.GenerateFilename(file.Filename)
+	contentType := file.Header.Get("Content-Type")
+
+	url, err := h.userService.UploadAvatar(c.Context(), userID, data, filename, contentType)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK", Data: fiber.Map{"url": url},
+	})
+}
+
+// @Summary     Delete avatar
+// @Description Remove the profile avatar for the authenticated user
+// @Tags        Profile
+// @Produce     json
+// @Security    BearerAuth
+// @Success     200 {object} response.WebResponse "Avatar deleted"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     500 {object} response.WebResponse "Internal server error"
+// @Router      /api/profile/avatar [delete]
+func (h *ProfileHandler) DeleteAvatar(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	if err := h.userService.DeleteAvatar(c.Context(), userID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK",
 	})
 }

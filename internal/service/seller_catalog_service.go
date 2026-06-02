@@ -37,12 +37,12 @@ type SellerCatalogService interface {
 	GetMyProducts(userID uint) ([]entity.Product, error)
 	CreateProduct(userID uint, req CreateProductInput) (*entity.Product, error)
 	UpdateProduct(userID, productID uint, req UpdateProductInput) (*entity.Product, error)
-	DeleteProduct(userID, productID uint) error
+	DeleteProduct(ctx context.Context, userID, productID uint) error
 
 	GetVariants(userID, productID uint) ([]entity.ProductVariant, error)
 	CreateVariant(userID, productID uint, req VariantInput) (*entity.ProductVariant, error)
 	UpdateVariant(userID, variantID uint, req VariantInput) (*entity.ProductVariant, error)
-	DeleteVariant(userID, variantID uint) error
+	DeleteVariant(ctx context.Context, userID, variantID uint) error
 
 	UploadProductImage(ctx context.Context, userID, productID uint, data []byte, filename, contentType string) (string, error)
 	DeleteProductImage(ctx context.Context, userID, productID uint) error
@@ -170,7 +170,7 @@ func (s *sellerCatalogService) UpdateProduct(userID, productID uint, req UpdateP
 	return &product, nil
 }
 
-func (s *sellerCatalogService) DeleteProduct(userID, productID uint) error {
+func (s *sellerCatalogService) DeleteProduct(ctx context.Context, userID, productID uint) error {
 	store, err := s.storeRepo.FindByUserID(userID)
 	if err != nil {
 		return errors.New("toko tidak ditemukan")
@@ -183,6 +183,19 @@ func (s *sellerCatalogService) DeleteProduct(userID, productID uint) error {
 
 	if product.StoreID != store.ID {
 		return errors.New("akses ditolak")
+	}
+
+	// Clean up all variant images from S3
+	variants, _ := s.productRepo.FindVariantsByProductID(productID)
+	for _, v := range variants {
+		if v.ImageURL != "" {
+			_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(v.ImageURL))
+		}
+	}
+
+	// Clean up product image from S3
+	if product.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(product.ImageURL))
 	}
 
 	if err := s.productRepo.DeleteProduct(productID); err != nil {
@@ -275,7 +288,7 @@ func (s *sellerCatalogService) UpdateVariant(userID, variantID uint, req Variant
 	return &variant, nil
 }
 
-func (s *sellerCatalogService) DeleteVariant(userID, variantID uint) error {
+func (s *sellerCatalogService) DeleteVariant(ctx context.Context, userID, variantID uint) error {
 	variant, err := s.productRepo.FindVariantByID(variantID)
 	if err != nil {
 		return errors.New("varian tidak ditemukan")
@@ -293,6 +306,11 @@ func (s *sellerCatalogService) DeleteVariant(userID, variantID uint) error {
 
 	if product.StoreID != store.ID {
 		return errors.New("akses ditolak")
+	}
+
+	// Clean up variant image from S3
+	if variant.ImageURL != "" {
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(variant.ImageURL))
 	}
 
 	if err := s.productRepo.DeleteVariant(variantID); err != nil {
@@ -326,6 +344,8 @@ func (s *sellerCatalogService) UploadProductImage(ctx context.Context, userID, p
 	}
 
 	if err := s.productRepo.UpdateImageURL(productID, url); err != nil {
+		// DB failed — roll back the S3 upload
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(url))
 		return "", errors.New("gagal update url gambar")
 	}
 
@@ -385,6 +405,8 @@ func (s *sellerCatalogService) UploadVariantImage(ctx context.Context, userID, v
 	}
 
 	if err := s.productRepo.UpdateVariantImageURL(variantID, url); err != nil {
+		// DB failed — roll back the S3 upload
+		_ = s.s3Svc.DeleteFile(ctx, s.s3Svc.ExtractKeyFromURL(url))
 		return "", errors.New("gagal update url gambar varian")
 	}
 
@@ -418,4 +440,3 @@ func (s *sellerCatalogService) DeleteVariantImage(ctx context.Context, userID, v
 
 	return nil
 }
-

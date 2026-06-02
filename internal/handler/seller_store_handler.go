@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"io"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/yosmisyael/cloudmart-web-service/internal/config"
 	_ "github.com/yosmisyael/cloudmart-web-service/internal/entity"
@@ -8,6 +10,7 @@ import (
 	"github.com/yosmisyael/cloudmart-web-service/internal/repository"
 	"github.com/yosmisyael/cloudmart-web-service/internal/service"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/response"
+	"github.com/yosmisyael/cloudmart-web-service/pkg/upload"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/validator"
 )
 
@@ -33,6 +36,8 @@ func NewSellerStoreHandler(router fiber.Router, svc service.SellerStoreService, 
 	seller := router.Group("/api/seller", middleware.SellerOnly(userRepo, cfg))
 	seller.Get("/store", h.GetStore)
 	seller.Put("/store", h.UpdateStore)
+	seller.Post("/store/logo", h.UploadStoreLogo)
+	seller.Delete("/store/logo", h.DeleteStoreLogo)
 }
 
 // @Summary     Get seller store
@@ -153,5 +158,98 @@ func (h *SellerStoreHandler) UpdateStore(c *fiber.Ctx) error {
 		Code:   fiber.StatusOK,
 		Status: "OK",
 		Data:   store,
+	})
+}
+
+// @Summary     Upload store logo
+// @Description Upload or replace the logo for the authenticated seller's store
+// @Tags        Seller - Store
+// @Accept      multipart/form-data
+// @Produce     json
+// @Security    BearerAuth
+// @Param       image formData file true "Logo image (jpg/png, max 5MB)"
+// @Success     200 {object} response.WebResponse{data=object{url=string}} "Logo uploaded"
+// @Failure     400 {object} response.WebResponse "Invalid file"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     500 {object} response.WebResponse "Upload failed"
+// @Router      /api/seller/store/logo [post]
+func (h *SellerStoreHandler) UploadStoreLogo(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "File gambar diperlukan",
+		})
+	}
+
+	if err := upload.ValidateImage(file, 5); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: err.Error(),
+		})
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membuka file",
+		})
+	}
+	defer f.Close()
+
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membaca file",
+		})
+	}
+
+	filename := upload.GenerateFilename(file.Filename)
+	contentType := file.Header.Get("Content-Type")
+
+	url, err := h.svc.UploadStoreLogo(c.Context(), userID, data, filename, contentType)
+	if err != nil {
+		if err.Error() == "toko tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK", Data: fiber.Map{"url": url},
+	})
+}
+
+// @Summary     Delete store logo
+// @Description Remove the logo of the authenticated seller's store
+// @Tags        Seller - Store
+// @Produce     json
+// @Security    BearerAuth
+// @Success     200 {object} response.WebResponse "Logo deleted"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     404 {object} response.WebResponse "Store not found"
+// @Router      /api/seller/store/logo [delete]
+func (h *SellerStoreHandler) DeleteStoreLogo(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	if err := h.svc.DeleteStoreLogo(c.Context(), userID); err != nil {
+		if err.Error() == "toko tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK",
 	})
 }

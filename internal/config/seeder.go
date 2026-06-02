@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const hashedPassword = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lHuu"
+const hashedPassword = "$2a$10$vx6htugaV4KRG2ucXc8iHOo/Ch4FRfM7aa6Tpc79j9ecPo9U6APsu"
 
 func RunSeeder(db *gorm.DB) {
 	var count int64

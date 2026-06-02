@@ -234,6 +234,8 @@ definitions:
         type: integer
       id:
         type: integer
+      logo_url:
+        type: string
       name:
         type: string
       products:
@@ -249,6 +251,8 @@ definitions:
         items:
           $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_internal_entity.Address'
         type: array
+      avatar_url:
+        type: string
       created_at:
         type: string
       email:
@@ -505,6 +509,8 @@ definitions:
     type: object
   internal_handler.ProfileResponse:
     properties:
+      avatar_url:
+        type: string
       email:
         type: string
       id:
@@ -1548,6 +1554,71 @@ paths:
       security:
       - BearerAuth: []
       summary: Set default address
+      tags:
+      - Profile
+  /api/profile/avatar:
+    delete:
+      description: Remove the profile avatar for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Avatar deleted
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete avatar
+      tags:
+      - Profile
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload or replace the profile avatar for the authenticated user
+      parameters:
+      - description: Avatar image (jpg/png, max 3MB)
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Avatar uploaded
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    url:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid file
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Upload failed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload avatar
       tags:
       - Profile
   /api/profile/password:
@@ -2608,6 +2679,95 @@ paths:
       summary: Update product
       tags:
       - Seller - Catalog
+  /api/seller/products/{id}/image:
+    delete:
+      description: Remove the main image of a product owned by the authenticated seller
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Image deleted
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete product image
+      tags:
+      - Seller - Catalog
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload or replace the main image for a product owned by the authenticated
+        seller
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image file (jpg/png, max 5MB)
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Image uploaded
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    url:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid file
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Upload failed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload product image
+      tags:
+      - Seller - Catalog
   /api/seller/products/{id}/variants:
     get:
       description: Retrieve all variants for a product owned by the authenticated
@@ -2903,6 +3063,79 @@ paths:
       summary: Update store
       tags:
       - Seller - Store
+  /api/seller/store/logo:
+    delete:
+      description: Remove the logo of the authenticated seller's store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logo deleted
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Store not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete store logo
+      tags:
+      - Seller - Store
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload or replace the logo for the authenticated seller's store
+      parameters:
+      - description: Logo image (jpg/png, max 5MB)
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logo uploaded
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    url:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid file
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Upload failed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload store logo
+      tags:
+      - Seller - Store
   /api/seller/variants/{id}:
     delete:
       description: Delete a variant belonging to the authenticated seller's product
@@ -2983,6 +3216,96 @@ paths:
       security:
       - BearerAuth: []
       summary: Update variant
+      tags:
+      - Seller - Catalog
+  /api/seller/variants/{id}/image:
+    delete:
+      description: Remove the image of a product variant owned by the authenticated
+        seller
+      parameters:
+      - description: Variant ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Image deleted
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Variant not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete variant image
+      tags:
+      - Seller - Catalog
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload or replace the image for a product variant owned by the
+        authenticated seller
+      parameters:
+      - description: Variant ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image file (jpg/png, max 5MB)
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Image uploaded
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+            - properties:
+                data:
+                  properties:
+                    url:
+                      type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid file
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "404":
+          description: Variant not found
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+        "500":
+          description: Upload failed
+          schema:
+            $ref: '#/definitions/github_com_yosmisyael_cloudmart-web-service_pkg_response.WebResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload variant image
       tags:
       - Seller - Catalog
   /api/seller/vouchers:

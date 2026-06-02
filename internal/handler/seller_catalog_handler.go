@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"io"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,6 +11,7 @@ import (
 	"github.com/yosmisyael/cloudmart-web-service/internal/repository"
 	"github.com/yosmisyael/cloudmart-web-service/internal/service"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/response"
+	"github.com/yosmisyael/cloudmart-web-service/pkg/upload"
 	"github.com/yosmisyael/cloudmart-web-service/pkg/validator"
 )
 
@@ -54,11 +56,15 @@ func NewSellerCatalogHandler(router fiber.Router, svc service.SellerCatalogServi
 	seller.Post("/products", h.CreateProduct)
 	seller.Put("/products/:id", h.UpdateProduct)
 	seller.Delete("/products/:id", h.DeleteProduct)
+	seller.Post("/products/:id/image", h.UploadProductImage)
+	seller.Delete("/products/:id/image", h.DeleteProductImage)
 
 	seller.Get("/products/:id/variants", h.GetVariants)
 	seller.Post("/products/:id/variants", h.CreateVariant)
 	seller.Put("/variants/:id", h.UpdateVariant)
 	seller.Delete("/variants/:id", h.DeleteVariant)
+	seller.Post("/variants/:id/image", h.UploadVariantImage)
+	seller.Delete("/variants/:id/image", h.DeleteVariantImage)
 }
 
 // @Summary     Get seller categories
@@ -386,7 +392,128 @@ func (h *SellerCatalogHandler) DeleteProduct(c *fiber.Ctx) error {
 		})
 	}
 
-	err = h.svc.DeleteProduct(userID, uint(id))
+	err = h.svc.DeleteProduct(c.Context(), userID, uint(id))
+	if err != nil {
+		if err.Error() == "produk tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		if err.Error() == "akses ditolak" {
+			return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{
+				Code: fiber.StatusForbidden, Status: "Forbidden", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK",
+	})
+}
+
+// @Summary     Upload product image
+// @Description Upload or replace the main image for a product owned by the authenticated seller
+// @Tags        Seller - Catalog
+// @Accept      multipart/form-data
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id    path     int  true "Product ID"
+// @Param       image formData file true "Image file (jpg/png, max 5MB)"
+// @Success     200 {object} response.WebResponse{data=object{url=string}} "Image uploaded"
+// @Failure     400 {object} response.WebResponse "Invalid file"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     404 {object} response.WebResponse "Product not found"
+// @Failure     500 {object} response.WebResponse "Upload failed"
+// @Router      /api/seller/products/{id}/image [post]
+func (h *SellerCatalogHandler) UploadProductImage(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "ID tidak valid",
+		})
+	}
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "File gambar diperlukan",
+		})
+	}
+
+	if err := upload.ValidateImage(file, 5); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: err.Error(),
+		})
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membuka file",
+		})
+	}
+	defer f.Close()
+
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membaca file",
+		})
+	}
+
+	filename := upload.GenerateFilename(file.Filename)
+	contentType := file.Header.Get("Content-Type")
+
+	url, err := h.svc.UploadProductImage(c.Context(), userID, uint(id), data, filename, contentType)
+	if err != nil {
+		if err.Error() == "produk tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		if err.Error() == "akses ditolak" {
+			return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{
+				Code: fiber.StatusForbidden, Status: "Forbidden", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK", Data: fiber.Map{"url": url},
+	})
+}
+
+// @Summary     Delete product image
+// @Description Remove the main image of a product owned by the authenticated seller
+// @Tags        Seller - Catalog
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Product ID"
+// @Success     200 {object} response.WebResponse "Image deleted"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     404 {object} response.WebResponse "Product not found"
+// @Router      /api/seller/products/{id}/image [delete]
+func (h *SellerCatalogHandler) DeleteProductImage(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "ID tidak valid",
+		})
+	}
+
+	err = h.svc.DeleteProductImage(c.Context(), userID, uint(id))
 	if err != nil {
 		if err.Error() == "produk tidak ditemukan" {
 			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
@@ -600,7 +727,128 @@ func (h *SellerCatalogHandler) DeleteVariant(c *fiber.Ctx) error {
 		})
 	}
 
-	err = h.svc.DeleteVariant(userID, uint(id))
+	err = h.svc.DeleteVariant(c.Context(), userID, uint(id))
+	if err != nil {
+		if err.Error() == "varian tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		if err.Error() == "akses ditolak" {
+			return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{
+				Code: fiber.StatusForbidden, Status: "Forbidden", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK",
+	})
+}
+
+// @Summary     Upload variant image
+// @Description Upload or replace the image for a product variant owned by the authenticated seller
+// @Tags        Seller - Catalog
+// @Accept      multipart/form-data
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id    path     int  true "Variant ID"
+// @Param       image formData file true "Image file (jpg/png, max 5MB)"
+// @Success     200 {object} response.WebResponse{data=object{url=string}} "Image uploaded"
+// @Failure     400 {object} response.WebResponse "Invalid file"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     404 {object} response.WebResponse "Variant not found"
+// @Failure     500 {object} response.WebResponse "Upload failed"
+// @Router      /api/seller/variants/{id}/image [post]
+func (h *SellerCatalogHandler) UploadVariantImage(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "ID tidak valid",
+		})
+	}
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "File gambar diperlukan",
+		})
+	}
+
+	if err := upload.ValidateImage(file, 5); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: err.Error(),
+		})
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membuka file",
+		})
+	}
+	defer f.Close()
+
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: "Gagal membaca file",
+		})
+	}
+
+	filename := upload.GenerateFilename(file.Filename)
+	contentType := file.Header.Get("Content-Type")
+
+	url, err := h.svc.UploadVariantImage(c.Context(), userID, uint(id), data, filename, contentType)
+	if err != nil {
+		if err.Error() == "varian tidak ditemukan" {
+			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
+				Code: fiber.StatusNotFound, Status: "Not Found", Errors: err.Error(),
+			})
+		}
+		if err.Error() == "akses ditolak" {
+			return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{
+				Code: fiber.StatusForbidden, Status: "Forbidden", Errors: err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
+			Code: fiber.StatusInternalServerError, Status: "Internal Server Error", Errors: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
+		Code: fiber.StatusOK, Status: "OK", Data: fiber.Map{"url": url},
+	})
+}
+
+// @Summary     Delete variant image
+// @Description Remove the image of a product variant owned by the authenticated seller
+// @Tags        Seller - Catalog
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Variant ID"
+// @Success     200 {object} response.WebResponse "Image deleted"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Failure     404 {object} response.WebResponse "Variant not found"
+// @Router      /api/seller/variants/{id}/image [delete]
+func (h *SellerCatalogHandler) DeleteVariantImage(c *fiber.Ctx) error {
+	userID := uint(c.Locals("user_id").(float64))
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
+			Code: fiber.StatusBadRequest, Status: "Bad Request", Errors: "ID tidak valid",
+		})
+	}
+
+	err = h.svc.DeleteVariantImage(c.Context(), userID, uint(id))
 	if err != nil {
 		if err.Error() == "varian tidak ditemukan" {
 			return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{
