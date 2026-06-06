@@ -23,6 +23,7 @@ func NewSellerOrderRepository(db *gorm.DB) SellerOrderRepository {
 func (r *sellerOrderRepository) FindByStoreID(storeID uint, status string) ([]entity.Order, error) {
 	var orders []entity.Order
 	query := r.db.Preload("OrderItems").
+		Preload("User").
 		Joins("JOIN order_items ON order_items.order_id = orders.id").
 		Joins("JOIN product_variants ON product_variants.id = order_items.variant_id").
 		Joins("JOIN products ON products.id = product_variants.product_id").

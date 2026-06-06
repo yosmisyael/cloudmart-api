@@ -33,6 +33,7 @@ type CheckoutRequest struct {
 	Address           string `json:"address"`
 	LogisticServiceID uint   `json:"logistic_service_id" validate:"required"`
 	VoucherCode       string `json:"voucher_code"`
+	CartItemIDs       []uint `json:"cart_item_ids"`
 }
 
 // @Summary     Checkout order
@@ -68,7 +69,7 @@ func (h *OrderHandler) Checkout(c *fiber.Ctx) error {
 		})
 	}
 
-	order, err := h.orderService.Checkout(userID, req.AddressID, req.Address, req.LogisticServiceID, req.VoucherCode)
+	order, err := h.orderService.Checkout(userID, req.AddressID, req.Address, req.LogisticServiceID, req.VoucherCode, req.CartItemIDs)
 	if err != nil {
 		status := fiber.StatusConflict
 		if err.Error() == "alamat pengiriman harus diisi" || err.Error() == "alamat minimal 10 karakter" {
@@ -123,7 +124,7 @@ func (h *OrderHandler) EstimateOrder(c *fiber.Ctx) error {
 		})
 	}
 
-	estimate, err := h.orderService.EstimateOrder(userID, req.LogisticServiceID, req.VoucherCode)
+	estimate, err := h.orderService.EstimateOrder(userID, req.LogisticServiceID, req.VoucherCode, req.CartItemIDs)
 	if err != nil {
 		status := fiber.StatusBadRequest
 		if err.Error() == "layanan logistik tidak ditemukan" || err.Error() == "voucher tidak ditemukan" {
