@@ -47,8 +47,10 @@ func NewSellerPromoHandler(router fiber.Router, svc service.SellerPromoService, 
 
 	seller.Get("/payment-configs", h.GetPaymentConfigs)
 	seller.Post("/payment-configs", h.CreatePaymentConfig)
+	seller.Put("/payment-configs/:id", h.UpdatePaymentConfig)
 	seller.Delete("/payment-configs/:id", h.DeletePaymentConfig)
 	seller.Post("/payment-configs/:id/banks", h.AddBank)
+	seller.Put("/banks/:id", h.UpdateBank)
 	seller.Delete("/banks/:id", h.DeleteBank)
 }
 
@@ -433,4 +435,80 @@ func (h *SellerPromoHandler) DeleteBank(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
 		Code: fiber.StatusOK, Status: "OK",
 	})
+}
+
+// @Summary     Update payment config
+// @Description Update the name of a payment configuration
+// @Tags        Seller - Promo
+// @Accept      json
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Payment config ID"
+// @Param       request body PaymentConfigRequest true "Config payload"
+// @Success     200 {object} response.WebResponse{data=entity.PaymentConfiguration} "Config updated"
+// @Failure     400 {object} response.WebResponse "Validation error"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Router      /api/seller/payment-configs/{id} [put]
+func (h *SellerPromoHandler) UpdatePaymentConfig(c *fiber.Ctx) error {
+	configID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid config ID"})
+	}
+
+	var req struct {
+		Name string `json:"name" validate:"required,min=1,max=100"`
+	}
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid request body"})
+	}
+	if err := validator.Validate.Struct(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: err.Error()})
+	}
+
+	sellerUserID := uint(c.Locals("user_id").(float64))
+
+	updated, err := h.svc.UpdatePaymentConfig(uint(configID), sellerUserID, req.Name)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{Code: 404, Status: "Error", Errors: err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{Code: 200, Status: "OK", Data: updated})
+}
+
+// @Summary     Update bank
+// @Description Update bank account details
+// @Tags        Seller - Promo
+// @Accept      json
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Bank ID"
+// @Param       request body BankRequest true "Bank payload"
+// @Success     200 {object} response.WebResponse{data=entity.PaymentBank} "Bank updated"
+// @Failure     400 {object} response.WebResponse "Validation error"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Router      /api/seller/banks/{id} [put]
+func (h *SellerPromoHandler) UpdateBank(c *fiber.Ctx) error {
+	bankID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid bank ID"})
+	}
+
+	var req BankRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid request body"})
+	}
+	if err := validator.Validate.Struct(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: err.Error()})
+	}
+
+	sellerUserID := uint(c.Locals("user_id").(float64))
+
+	updated, err := h.svc.UpdateBank(uint(bankID), sellerUserID, req.Name, req.AccountID, req.AccountName)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{Code: 404, Status: "Error", Errors: err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{Code: 200, Status: "OK", Data: updated})
 }

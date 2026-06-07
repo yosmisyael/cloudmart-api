@@ -19,6 +19,9 @@ type ProductRepository interface {
 	FindVariantsByProductID(productID uint) ([]entity.ProductVariant, error)
 	UpdateImageURL(productID uint, url string) error
 	UpdateVariantImageURL(variantID uint, url string) error
+	GetByIDForSeller(productID, sellerUserID uint) (*entity.Product, error)
+	GetVariantByIDForSeller(variantID, sellerUserID uint) (*entity.ProductVariant, error)
+	UpdateVariantStock(variant *entity.ProductVariant) error
 }
 
 type productRepository struct {
@@ -109,4 +112,37 @@ func (r *productRepository) UpdateImageURL(productID uint, url string) error {
 
 func (r *productRepository) UpdateVariantImageURL(variantID uint, url string) error {
 	return r.db.Model(&entity.ProductVariant{}).Where("id = ?", variantID).Update("image_url", url).Error
+}
+
+func (r *productRepository) GetByIDForSeller(productID, sellerUserID uint) (*entity.Product, error) {
+	var product entity.Product
+	result := r.db.
+		Joins("JOIN stores ON stores.id = products.store_id").
+		Where("products.id = ? AND stores.user_id = ?", productID, sellerUserID).
+		Preload("Variants").
+		Preload("Category").
+		Preload("Store").
+		First(&product)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &product, nil
+}
+
+func (r *productRepository) GetVariantByIDForSeller(variantID, sellerUserID uint) (*entity.ProductVariant, error) {
+	var variant entity.ProductVariant
+	result := r.db.
+		Joins("JOIN products ON products.id = product_variants.product_id").
+		Joins("JOIN stores ON stores.id = products.store_id").
+		Where("product_variants.id = ? AND stores.user_id = ?", variantID, sellerUserID).
+		First(&variant)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &variant, nil
+}
+
+func (r *productRepository) UpdateVariantStock(variant *entity.ProductVariant) error {
+	return r.db.Model(variant).Update("stock", variant.Stock).Error
 }

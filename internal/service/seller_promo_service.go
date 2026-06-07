@@ -32,8 +32,10 @@ type SellerPromoService interface {
 	GetPaymentConfigs(userID uint) ([]entity.PaymentConfiguration, error)
 	CreatePaymentConfig(userID uint, name string) (*entity.PaymentConfiguration, error)
 	DeletePaymentConfig(userID, configID uint) error
+	UpdatePaymentConfig(configID, sellerUserID uint, name string) (*entity.PaymentConfiguration, error)
 	AddBank(userID, configID uint, req BankInput) (*entity.PaymentBank, error)
 	DeleteBank(userID, bankID uint) error
+	UpdateBank(bankID, sellerUserID uint, name, accountID, accountName string) (*entity.PaymentBank, error)
 }
 
 type sellerPromoService struct {
@@ -233,4 +235,43 @@ func (s *sellerPromoService) DeleteBank(userID, bankID uint) error {
 		return errors.New("gagal menghapus bank")
 	}
 	return nil
+}
+
+func (s *sellerPromoService) UpdatePaymentConfig(configID, sellerUserID uint, name string) (*entity.PaymentConfiguration, error) {
+	store, err := s.storeRepo.FindByUserID(sellerUserID)
+	if err != nil {
+		return nil, errors.New("store not found")
+	}
+
+	config, err := s.paymentRepo.GetConfigByIDAndStoreID(configID, store.ID)
+	if err != nil {
+		return nil, errors.New("payment config not found or not owned by seller")
+	}
+
+	config.Name = name
+	if err := s.paymentRepo.UpdateConfig(config); err != nil {
+		return nil, err
+	}
+	return config, nil
+}
+
+func (s *sellerPromoService) UpdateBank(bankID, sellerUserID uint, name, accountID, accountName string) (*entity.PaymentBank, error) {
+	store, err := s.storeRepo.FindByUserID(sellerUserID)
+	if err != nil {
+		return nil, errors.New("store not found")
+	}
+
+	bank, err := s.paymentRepo.GetBankByIDAndStoreID(bankID, store.ID)
+	if err != nil {
+		return nil, errors.New("bank not found or not owned by seller")
+	}
+
+	bank.Name = name
+	bank.AccountID = accountID
+	bank.AccountName = accountName
+
+	if err := s.paymentRepo.UpdateBank(bank); err != nil {
+		return nil, err
+	}
+	return bank, nil
 }

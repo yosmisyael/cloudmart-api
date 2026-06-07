@@ -13,6 +13,10 @@ type PaymentRepository interface {
 	CreateBank(b *entity.PaymentBank) error
 	DeleteBank(id uint) error
 	FindBankByID(id uint) (*entity.PaymentBank, error)
+	GetConfigByIDAndStoreID(configID, storeID uint) (*entity.PaymentConfiguration, error)
+	UpdateConfig(config *entity.PaymentConfiguration) error
+	GetBankByIDAndStoreID(bankID, storeID uint) (*entity.PaymentBank, error)
+	UpdateBank(bank *entity.PaymentBank) error
 }
 
 type paymentRepository struct {
@@ -61,4 +65,33 @@ func (r *paymentRepository) FindBankByID(id uint) (*entity.PaymentBank, error) {
 		return nil, err
 	}
 	return &bank, nil
+}
+
+func (r *paymentRepository) GetConfigByIDAndStoreID(configID, storeID uint) (*entity.PaymentConfiguration, error) {
+	var config entity.PaymentConfiguration
+	result := r.db.Where("id = ? AND store_id = ?", configID, storeID).First(&config)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &config, nil
+}
+
+func (r *paymentRepository) UpdateConfig(config *entity.PaymentConfiguration) error {
+	return r.db.Save(config).Error
+}
+
+func (r *paymentRepository) GetBankByIDAndStoreID(bankID, storeID uint) (*entity.PaymentBank, error) {
+	var bank entity.PaymentBank
+	result := r.db.
+		Joins("JOIN payment_configurations ON payment_configurations.id = payment_banks.payment_configuration_id").
+		Where("payment_banks.id = ? AND payment_configurations.store_id = ?", bankID, storeID).
+		First(&bank)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &bank, nil
+}
+
+func (r *paymentRepository) UpdateBank(bank *entity.PaymentBank) error {
+	return r.db.Save(bank).Error
 }

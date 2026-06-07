@@ -25,6 +25,7 @@ type OrderService interface {
 	GetOrders(userID uint) ([]entity.Order, error)
 	GetOrderByID(id, userID uint) (*entity.Order, error)
 	InitiatePayment(userID, orderID uint) (*entity.Order, error)
+	ConfirmOrder(orderID, userID uint) error
 }
 
 type orderService struct {
@@ -361,4 +362,18 @@ func (s *orderService) InitiatePayment(userID, orderID uint) (*entity.Order, err
 	order.PaymentURL = &paymentURL
 
 	return order, nil
+}
+
+func (s *orderService) ConfirmOrder(orderID, userID uint) error {
+	order, err := s.orderRepo.GetByIDAndUserID(orderID, userID)
+	if err != nil {
+		return errors.New("order not found")
+	}
+	if order.ShippingStatus != "delivered" {
+		return errors.New("order has not been delivered yet")
+	}
+	if order.PaymentStatus == "settlement" {
+		return nil // idempotent — already confirmed, no-op
+	}
+	return s.orderRepo.UpdatePaymentStatus(orderID, "settlement")
 }

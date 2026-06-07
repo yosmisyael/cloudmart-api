@@ -15,6 +15,7 @@ type OrderRepository interface {
 	UpdatePaymentMethod(orderID uint, method string) error
 	FindOrderItemByID(itemID uint) (*entity.OrderItem, error)
 	CancelOrder(orderID uint) error
+	GetByIDAndUserID(orderID, userID uint) (*entity.Order, error)
 }
 
 type orderRepository struct {
@@ -150,4 +151,13 @@ func (r *orderRepository) CancelOrder(orderID uint) error {
 
 		return nil
 	})
+}
+
+func (r *orderRepository) GetByIDAndUserID(orderID, userID uint) (*entity.Order, error) {
+	var order entity.Order
+	result := r.db.Where("id = ? AND user_id = ?", orderID, userID).First(&order)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &order, nil
 }
