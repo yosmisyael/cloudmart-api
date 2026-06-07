@@ -26,6 +26,7 @@ type Order struct {
 	PaymentURL *string `gorm:"type:varchar(255)" json:"payment_url"`
 
 	OrderItems []OrderItem `gorm:"foreignKey:OrderID" json:"order_items"`
+	User       User        `gorm:"foreignKey:UserID" json:"user,omitempty"`
 
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

@@ -106,7 +106,7 @@ func (h *SellerPromoHandler) CreateVoucher(c *fiber.Ctx) error {
 	}
 
 	voucher, err := h.svc.CreateVoucher(userID, service.VoucherInput{
-		Name: req.Name, Type: req.Type, Amount: req.Amount, Max: req.Max, ExpiredAt: req.ExpiredAt,
+		Code: req.Name, Name: req.Name, Type: req.Type, Amount: req.Amount, Max: req.Max, ExpiredAt: req.ExpiredAt,
 	})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response.WebResponse{
@@ -157,7 +157,7 @@ func (h *SellerPromoHandler) UpdateVoucher(c *fiber.Ctx) error {
 	}
 
 	voucher, err := h.svc.UpdateVoucher(userID, uint(id), service.VoucherInput{
-		Name: req.Name, Type: req.Type, Amount: req.Amount, Max: req.Max, ExpiredAt: req.ExpiredAt,
+		Code: req.Name, Name: req.Name, Type: req.Type, Amount: req.Amount, Max: req.Max, ExpiredAt: req.ExpiredAt,
 	})
 	if err != nil {
 		if err.Error() == "voucher tidak ditemukan" {

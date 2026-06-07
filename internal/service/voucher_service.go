@@ -55,7 +55,7 @@ func (s *voucherService) ClaimVoucher(userID uint, code string) error {
 
 	claimed, _ := s.voucherRepo.IsClaimedByUser(userID, voucher.ID)
 	if claimed {
-		return errors.New("sudah diklaim")
+		return nil // idempotent success if already claimed
 	}
 
 	if err := s.voucherRepo.ClaimVoucher(userID, voucher.ID); err != nil {

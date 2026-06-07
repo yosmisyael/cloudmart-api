@@ -19,8 +19,8 @@ type OrderEstimate struct {
 }
 
 type OrderService interface {
-	Checkout(userID uint, addressID *uint, address string, logisticServiceID uint, voucherCode string) (*entity.Order, error)
-	EstimateOrder(userID uint, logisticServiceID uint, voucherCode string) (*OrderEstimate, error)
+	Checkout(userID uint, addressID *uint, address string, logisticServiceID uint, voucherCode string, cartItemIDs []uint) (*entity.Order, error)
+	EstimateOrder(userID uint, logisticServiceID uint, voucherCode string, cartItemIDs []uint) (*OrderEstimate, error)
 	CancelOrder(userID, orderID uint) error
 	GetOrders(userID uint) ([]entity.Order, error)
 	GetOrderByID(id, userID uint) (*entity.Order, error)
@@ -60,7 +60,7 @@ func NewOrderService(
 	}
 }
 
-func (s *orderService) Checkout(userID uint, addressID *uint, address string, logisticServiceID uint, voucherCode string) (*entity.Order, error) {
+func (s *orderService) Checkout(userID uint, addressID *uint, address string, logisticServiceID uint, voucherCode string, cartItemIDs []uint) (*entity.Order, error) {
 	if addressID == nil && address == "" {
 		return nil, errors.New("alamat pengiriman harus diisi")
 	}
@@ -102,6 +102,22 @@ func (s *orderService) Checkout(userID uint, addressID *uint, address string, lo
 
 	if len(cartItems) == 0 {
 		return nil, errors.New("keranjang kosong")
+	}
+
+	if len(cartItemIDs) > 0 {
+		var filtered []entity.Cart
+		for _, item := range cartItems {
+			for _, id := range cartItemIDs {
+				if item.ID == id {
+					filtered = append(filtered, item)
+					break
+				}
+			}
+		}
+		cartItems = filtered
+		if len(cartItems) == 0 {
+			return nil, errors.New("barang yang dipilih tidak ada di keranjang")
+		}
 	}
 
 	var subTotal float64
@@ -184,7 +200,7 @@ func (s *orderService) Checkout(userID uint, addressID *uint, address string, lo
 		ShippingStatus:    "pending",
 	}
 
-	if err := s.orderRepo.CreateOrder(&order, orderItems, userID); err != nil {
+	if err := s.orderRepo.CreateOrder(&order, orderItems, userID, cartItemIDs); err != nil {
 		return nil, fmt.Errorf("transaksi gagal: %v", err)
 	}
 
@@ -193,7 +209,7 @@ func (s *orderService) Checkout(userID uint, addressID *uint, address string, lo
 	return &order, nil
 }
 
-func (s *orderService) EstimateOrder(userID uint, logisticServiceID uint, voucherCode string) (*OrderEstimate, error) {
+func (s *orderService) EstimateOrder(userID uint, logisticServiceID uint, voucherCode string, cartItemIDs []uint) (*OrderEstimate, error) {
 	logisticService, err := s.logisticRepo.FindServiceByID(logisticServiceID)
 	if err != nil {
 		return nil, errors.New("layanan logistik tidak ditemukan")
@@ -207,6 +223,22 @@ func (s *orderService) EstimateOrder(userID uint, logisticServiceID uint, vouche
 
 	if len(cartItems) == 0 {
 		return nil, errors.New("keranjang kosong")
+	}
+
+	if len(cartItemIDs) > 0 {
+		var filtered []entity.Cart
+		for _, item := range cartItems {
+			for _, id := range cartItemIDs {
+				if item.ID == id {
+					filtered = append(filtered, item)
+					break
+				}
+			}
+		}
+		cartItems = filtered
+		if len(cartItems) == 0 {
+			return nil, errors.New("barang yang dipilih tidak ada di keranjang")
+		}
 	}
 
 	var subTotal float64
