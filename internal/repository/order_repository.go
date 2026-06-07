@@ -6,7 +6,7 @@ import (
 )
 
 type OrderRepository interface {
-	CreateOrder(order *entity.Order, items []entity.OrderItem, userID uint) error
+	CreateOrder(order *entity.Order, items []entity.OrderItem, userID uint, cartItemIDs []uint) error
 	FindByUserID(userID uint) ([]entity.Order, error)
 	FindByID(id, userID uint) (*entity.Order, error)
 	FindByOrderID(orderID uint) (*entity.Order, error)
@@ -15,6 +15,7 @@ type OrderRepository interface {
 	UpdatePaymentMethod(orderID uint, method string) error
 	FindOrderItemByID(itemID uint) (*entity.OrderItem, error)
 	CancelOrder(orderID uint) error
+	GetByIDAndUserID(orderID, userID uint) (*entity.Order, error)
 }
 
 type orderRepository struct {
@@ -27,7 +28,7 @@ func NewOrderRepository(db *gorm.DB) OrderRepository {
 
 // CreateOrder creates an order with items, decrements stock, and clears the user's cart
 // all within a single database transaction for atomicity.
-func (r *orderRepository) CreateOrder(order *entity.Order, items []entity.OrderItem, userID uint) error {
+func (r *orderRepository) CreateOrder(order *entity.Order, items []entity.OrderItem, userID uint, cartItemIDs []uint) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(order).Error; err != nil {
 			return err
@@ -54,8 +55,14 @@ func (r *orderRepository) CreateOrder(order *entity.Order, items []entity.OrderI
 			}
 		}
 
-		if err := tx.Where("user_id = ?", userID).Delete(&entity.Cart{}).Error; err != nil {
-			return err
+		if len(cartItemIDs) > 0 {
+			if err := tx.Where("id IN ?", cartItemIDs).Delete(&entity.Cart{}).Error; err != nil {
+				return err
+			}
+		} else {
+			if err := tx.Where("user_id = ?", userID).Delete(&entity.Cart{}).Error; err != nil {
+				return err
+			}
 		}
 
 		return nil
@@ -68,6 +75,7 @@ func (r *orderRepository) FindByUserID(userID uint) ([]entity.Order, error) {
 		Preload("OrderItems").
 		Preload("OrderItems.Variant").
 		Preload("OrderItems.Variant.Product").
+		Preload("OrderItems.Variant.Product.Store").
 		Order("created_at DESC").
 		Find(&orders).Error
 	return orders, err
@@ -77,6 +85,9 @@ func (r *orderRepository) FindByID(id, userID uint) (*entity.Order, error) {
 	var order entity.Order
 	err := r.db.Where("id = ? AND user_id = ?", id, userID).
 		Preload("OrderItems").
+		Preload("OrderItems.Variant").
+		Preload("OrderItems.Variant.Product").
+		Preload("OrderItems.Variant.Product.Store").
 		First(&order).Error
 	if err != nil {
 		return nil, err
@@ -140,4 +151,13 @@ func (r *orderRepository) CancelOrder(orderID uint) error {
 
 		return nil
 	})
+}
+
+func (r *orderRepository) GetByIDAndUserID(orderID, userID uint) (*entity.Order, error) {
+	var order entity.Order
+	result := r.db.Where("id = ? AND user_id = ?", orderID, userID).First(&order)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &order, nil
 }

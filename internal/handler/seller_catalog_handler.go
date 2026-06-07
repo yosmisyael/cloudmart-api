@@ -54,6 +54,7 @@ func NewSellerCatalogHandler(router fiber.Router, svc service.SellerCatalogServi
 
 	seller.Get("/products", h.GetMyProducts)
 	seller.Post("/products", h.CreateProduct)
+	seller.Get("/products/:id", h.GetProductByID)
 	seller.Put("/products/:id", h.UpdateProduct)
 	seller.Delete("/products/:id", h.DeleteProduct)
 	seller.Post("/products/:id/image", h.UploadProductImage)
@@ -62,6 +63,7 @@ func NewSellerCatalogHandler(router fiber.Router, svc service.SellerCatalogServi
 	seller.Get("/products/:id/variants", h.GetVariants)
 	seller.Post("/products/:id/variants", h.CreateVariant)
 	seller.Put("/variants/:id", h.UpdateVariant)
+	seller.Patch("/variants/:id/stock", h.UpdateVariantStock)
 	seller.Delete("/variants/:id", h.DeleteVariant)
 	seller.Post("/variants/:id/image", h.UploadVariantImage)
 	seller.Delete("/variants/:id/image", h.DeleteVariantImage)
@@ -868,4 +870,72 @@ func (h *SellerCatalogHandler) DeleteVariantImage(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response.WebResponse{
 		Code: fiber.StatusOK, Status: "OK",
 	})
+}
+
+// @Summary     Get seller product by ID
+// @Description Retrieve a specific product belonging to the authenticated seller's store
+// @Tags        Seller - Catalog
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Product ID"
+// @Success     200 {object} response.WebResponse{data=entity.Product} "Product detail"
+// @Failure     400 {object} response.WebResponse "Invalid product ID"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     404 {object} response.WebResponse "Product not found or not owned"
+// @Router      /api/seller/products/{id} [get]
+func (h *SellerCatalogHandler) GetProductByID(c *fiber.Ctx) error {
+	productID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid product ID"})
+	}
+
+	sellerUserID := uint(c.Locals("user_id").(float64))
+
+	product, err := h.svc.GetProductByID(uint(productID), sellerUserID)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(response.WebResponse{Code: 404, Status: "Error", Errors: err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{Code: 200, Status: "OK", Data: product})
+}
+
+type UpdateVariantStockRequest struct {
+	Stock int `json:"stock" validate:"min=0"`
+}
+
+// @Summary     Update variant stock
+// @Description Update the stock quantity of a variant belonging to the authenticated seller
+// @Tags        Seller - Catalog
+// @Accept      json
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Variant ID"
+// @Param       request body UpdateVariantStockRequest true "Stock payload"
+// @Success     200 {object} response.WebResponse{data=entity.ProductVariant} "Variant updated"
+// @Failure     400 {object} response.WebResponse "Validation error"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Forbidden"
+// @Router      /api/seller/variants/{id}/stock [patch]
+func (h *SellerCatalogHandler) UpdateVariantStock(c *fiber.Ctx) error {
+	variantID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid variant ID"})
+	}
+
+	var req UpdateVariantStockRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid request body"})
+	}
+	if err := validator.Validate.Struct(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: err.Error()})
+	}
+
+	sellerUserID := uint(c.Locals("user_id").(float64))
+
+	updated, err := h.svc.UpdateVariantStock(uint(variantID), sellerUserID, req.Stock)
+	if err != nil {
+		return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{Code: 403, Status: "Error", Errors: err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{Code: 200, Status: "OK", Data: updated})
 }

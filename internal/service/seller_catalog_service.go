@@ -35,6 +35,7 @@ type SellerCatalogService interface {
 	DeleteCategory(userID, categoryID uint) error
 
 	GetMyProducts(userID uint) ([]entity.Product, error)
+	GetProductByID(productID, sellerUserID uint) (*entity.Product, error)
 	CreateProduct(userID uint, req CreateProductInput) (*entity.Product, error)
 	UpdateProduct(userID, productID uint, req UpdateProductInput) (*entity.Product, error)
 	DeleteProduct(ctx context.Context, userID, productID uint) error
@@ -42,6 +43,7 @@ type SellerCatalogService interface {
 	GetVariants(userID, productID uint) ([]entity.ProductVariant, error)
 	CreateVariant(userID, productID uint, req VariantInput) (*entity.ProductVariant, error)
 	UpdateVariant(userID, variantID uint, req VariantInput) (*entity.ProductVariant, error)
+	UpdateVariantStock(variantID, sellerUserID uint, stock int) (*entity.ProductVariant, error)
 	DeleteVariant(ctx context.Context, userID, variantID uint) error
 
 	UploadProductImage(ctx context.Context, userID, productID uint, data []byte, filename, contentType string) (string, error)
@@ -439,4 +441,24 @@ func (s *sellerCatalogService) DeleteVariantImage(ctx context.Context, userID, v
 	}
 
 	return nil
+}
+
+func (s *sellerCatalogService) GetProductByID(productID, sellerUserID uint) (*entity.Product, error) {
+	product, err := s.productRepo.GetByIDForSeller(productID, sellerUserID)
+	if err != nil {
+		return nil, errors.New("produk tidak ditemukan atau bukan milik penjual")
+	}
+	return product, nil
+}
+
+func (s *sellerCatalogService) UpdateVariantStock(variantID, sellerUserID uint, stock int) (*entity.ProductVariant, error) {
+	variant, err := s.productRepo.GetVariantByIDForSeller(variantID, sellerUserID)
+	if err != nil {
+		return nil, errors.New("varian tidak ditemukan atau bukan milik penjual")
+	}
+	variant.Stock = stock
+	if err := s.productRepo.UpdateVariantStock(variant); err != nil {
+		return nil, errors.New("gagal mengupdate stok varian")
+	}
+	return variant, nil
 }

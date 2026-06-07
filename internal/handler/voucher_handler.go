@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/url"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -82,7 +83,12 @@ func (h *VoucherHandler) GetAvailableVouchers(c *fiber.Ctx) error {
 // @Router      /api/vouchers/{code}/claim [post]
 func (h *VoucherHandler) ClaimVoucher(c *fiber.Ctx) error {
 	userID := uint(c.Locals("user_id").(float64))
-	code := c.Params("code")
+	rawCode := c.Params("code")
+
+	code, errDecode := url.PathUnescape(rawCode)
+	if errDecode != nil || code == "" {
+		code = rawCode
+	}
 
 	err := h.svc.ClaimVoucher(userID, code)
 	if err != nil {

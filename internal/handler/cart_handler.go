@@ -94,7 +94,8 @@ func (h *CartHandler) AddToCart(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := h.cartService.AddToCart(userID, req.VariantID, req.Quantity); err != nil {
+	cartID, err := h.cartService.AddToCart(userID, req.VariantID, req.Quantity)
+	if err != nil {
 		status := fiber.StatusBadRequest
 		if err.Error() == "stok habis" || len(err.Error()) > 20 && err.Error()[:4] == "stok" {
 			status = fiber.StatusConflict
@@ -109,7 +110,7 @@ func (h *CartHandler) AddToCart(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(response.WebResponse{
 		Code:   fiber.StatusCreated,
 		Status: "Created",
-		Data:   "Item berhasil ditambahkan ke keranjang",
+		Data:   fiber.Map{"message": "Item berhasil ditambahkan ke keranjang", "cart_id": cartID},
 	})
 }
 

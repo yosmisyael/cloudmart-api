@@ -9,7 +9,7 @@ import (
 
 type CartService interface {
 	GetCart(userID uint) ([]CartItemResponse, float64, error)
-	AddToCart(userID, variantID uint, quantity int) error
+	AddToCart(userID, variantID uint, quantity int) (uint, error)
 	UpdateQuantity(cartID, userID uint, quantity int) error
 	RemoveItem(cartID, userID uint) error
 }
@@ -72,19 +72,20 @@ func (s *cartService) GetCart(userID uint) ([]CartItemResponse, float64, error) 
 	return items, grandTotal, nil
 }
 
-func (s *cartService) AddToCart(userID, variantID uint, quantity int) error {
+func (s *cartService) AddToCart(userID, variantID uint, quantity int) (uint, error) {
 	if quantity < 1 {
-		return errors.New("quantity minimal 1")
+		return 0, errors.New("quantity minimal 1")
 	}
 
 	if _, err := s.productRepo.FindVariantByID(variantID); err != nil {
-		return errors.New("variant tidak ditemukan")
+		return 0, errors.New("variant tidak ditemukan")
 	}
 
 	existing, err := s.cartRepo.FindByUserAndVariant(userID, variantID)
 	if err == nil && existing != nil {
 		existing.Quantity += quantity
-		return s.cartRepo.Update(existing)
+		err := s.cartRepo.Update(existing)
+		return existing.ID, err
 	}
 
 	cart := &entity.Cart{
@@ -92,7 +93,8 @@ func (s *cartService) AddToCart(userID, variantID uint, quantity int) error {
 		VariantID: variantID,
 		Quantity:  quantity,
 	}
-	return s.cartRepo.Create(cart)
+	err = s.cartRepo.Create(cart)
+	return cart.ID, err
 }
 
 func (s *cartService) UpdateQuantity(cartID, userID uint, quantity int) error {

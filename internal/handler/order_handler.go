@@ -24,6 +24,7 @@ func NewOrderHandler(router fiber.Router, orderService service.OrderService, cfg
 	orders.Post("/estimate", handler.EstimateOrder)
 	orders.Post("/:id/pay", handler.InitiatePayment)
 	orders.Post("/:id/cancel", handler.CancelOrder)
+	orders.Post("/:id/confirm", handler.ConfirmOrder)
 	orders.Get("/", handler.GetOrders)
 	orders.Get("/:id", handler.GetOrderByID)
 }
@@ -33,6 +34,7 @@ type CheckoutRequest struct {
 	Address           string `json:"address"`
 	LogisticServiceID uint   `json:"logistic_service_id" validate:"required"`
 	VoucherCode       string `json:"voucher_code"`
+	CartItemIDs       []uint `json:"cart_item_ids"`
 }
 
 // @Summary     Checkout order
@@ -68,7 +70,7 @@ func (h *OrderHandler) Checkout(c *fiber.Ctx) error {
 		})
 	}
 
-	order, err := h.orderService.Checkout(userID, req.AddressID, req.Address, req.LogisticServiceID, req.VoucherCode)
+	order, err := h.orderService.Checkout(userID, req.AddressID, req.Address, req.LogisticServiceID, req.VoucherCode, req.CartItemIDs)
 	if err != nil {
 		status := fiber.StatusConflict
 		if err.Error() == "alamat pengiriman harus diisi" || err.Error() == "alamat minimal 10 karakter" {
@@ -123,7 +125,7 @@ func (h *OrderHandler) EstimateOrder(c *fiber.Ctx) error {
 		})
 	}
 
-	estimate, err := h.orderService.EstimateOrder(userID, req.LogisticServiceID, req.VoucherCode)
+	estimate, err := h.orderService.EstimateOrder(userID, req.LogisticServiceID, req.VoucherCode, req.CartItemIDs)
 	if err != nil {
 		status := fiber.StatusBadRequest
 		if err.Error() == "layanan logistik tidak ditemukan" || err.Error() == "voucher tidak ditemukan" {
@@ -300,4 +302,31 @@ func (h *OrderHandler) InitiatePayment(c *fiber.Ctx) error {
 			"payment_url": order.PaymentURL,
 		},
 	})
+}
+
+// @Summary     Confirm order
+// @Description Confirm that the order has been received by the buyer
+// @Tags        Order
+// @Produce     json
+// @Security    BearerAuth
+// @Param       id path int true "Order ID"
+// @Success     200 {object} response.WebResponse "Order confirmed as received"
+// @Failure     400 {object} response.WebResponse "Invalid order ID"
+// @Failure     401 {object} response.WebResponse "Unauthorized"
+// @Failure     403 {object} response.WebResponse "Order has not been delivered yet"
+// @Failure     404 {object} response.WebResponse "Order not found"
+// @Router      /api/orders/{id}/confirm [post]
+func (h *OrderHandler) ConfirmOrder(c *fiber.Ctx) error {
+	orderID, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{Code: 400, Status: "Error", Errors: "invalid order ID"})
+	}
+
+	userID := uint(c.Locals("user_id").(float64))
+
+	if err := h.orderService.ConfirmOrder(uint(orderID), userID); err != nil {
+		return c.Status(fiber.StatusForbidden).JSON(response.WebResponse{Code: 403, Status: "Error", Errors: err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response.WebResponse{Code: 200, Status: "OK", Data: "Order confirmed as received"})
 }
