@@ -51,12 +51,18 @@ func (s *cartService) GetCart(userID uint) ([]CartItemResponse, float64, error) 
 		subtotal := cart.Variant.Price * float64(cart.Quantity)
 		grandTotal += subtotal
 
+		image := cart.Variant.ImageURL
+		if image == "" {
+			image = cart.Variant.Product.ImageURL
+		}
+
 		items = append(items, CartItemResponse{
 			ID:           cart.ID,
 			VariantID:    cart.VariantID,
 			VariantName:  cart.Variant.Product.Name,
 			VariantColor: cart.Variant.Color,
 			VariantSize:  cart.Variant.Size,
+			VariantImage: image,
 			Price:        cart.Variant.Price,
 			Quantity:     cart.Quantity,
 			Subtotal:     subtotal,

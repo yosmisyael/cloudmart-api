@@ -47,7 +47,7 @@ func (r *productRepository) FindAll(page, limit int, categoryID uint, search str
 	}
 
 	offset := (page - 1) * limit
-	err := query.Preload("Category").Preload("Variants").
+	err := query.Preload("Category").Preload("Variants").Preload("Store").
 		Limit(limit).Offset(offset).
 		Order("id DESC").
 		Find(&products).Error
