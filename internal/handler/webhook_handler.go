@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/yosmisyael/cloudmart-web-service/internal/service"
@@ -47,17 +46,8 @@ func (h *WebhookHandler) MidtransNotification(c *fiber.Ctx) error {
 		})
 	}
 
-	orderID, err := strconv.ParseUint(req.OrderID, 10, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(response.WebResponse{
-			Code:   fiber.StatusBadRequest,
-			Status: "Bad Request",
-			Errors: "Order ID tidak valid",
-		})
-	}
-
 	if err := h.webhookService.HandleMidtransNotification(
-		uint(orderID),
+		req.OrderID,
 		req.StatusCode,
 		req.GrossAmount,
 		req.SignatureKey,

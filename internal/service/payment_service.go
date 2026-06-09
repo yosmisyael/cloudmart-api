@@ -1,7 +1,8 @@
 package service
 
 import (
-	"strconv"
+	"fmt"
+	"time"
 
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/snap"
@@ -37,7 +38,7 @@ func (s *paymentService) CreateSnapTransaction(order *entity.Order, user *entity
 
 	snapReq := &snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  strconv.FormatUint(uint64(order.ID), 10),
+			OrderID:  fmt.Sprintf("%d-%d", order.ID, time.Now().Unix()),
 			GrossAmt: int64(order.GrandTotal),
 		},
 		CustomerDetail: &midtrans.CustomerDetails{

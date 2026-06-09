@@ -5,13 +5,14 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/yosmisyael/cloudmart-web-service/internal/config"
 	"github.com/yosmisyael/cloudmart-web-service/internal/repository"
 )
 
 type WebhookService interface {
-	HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error
+	HandleMidtransNotification(orderIDStr string, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error
 }
 
 type webhookService struct {
@@ -26,8 +27,8 @@ func NewWebhookService(orderRepo repository.OrderRepository, cfg *config.Config)
 	}
 }
 
-func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error {
-	raw := strconv.FormatUint(uint64(orderID), 10) + statusCode + grossAmount + s.config.MidtransServerKey
+func (s *webhookService) HandleMidtransNotification(orderIDStr string, statusCode, grossAmount, signatureKey, transactionStatus, paymentType string) error {
+	raw := orderIDStr + statusCode + grossAmount + s.config.MidtransServerKey
 	hash := sha512.Sum512([]byte(raw))
 	expectedSignature := hex.EncodeToString(hash[:])
 
@@ -35,7 +36,13 @@ func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, gr
 		return fmt.Errorf("signature tidak valid")
 	}
 
-	if _, err := s.orderRepo.FindByOrderID(orderID); err != nil {
+	parts := strings.Split(orderIDStr, "-")
+	orderID, err := strconv.ParseUint(parts[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("order id invalid")
+	}
+
+	if _, err := s.orderRepo.FindByOrderID(uint(orderID)); err != nil {
 		return fmt.Errorf("order tidak ditemukan")
 	}
 
@@ -54,8 +61,8 @@ func (s *webhookService) HandleMidtransNotification(orderID uint, statusCode, gr
 	}
 
 	if paymentType != "" {
-		_ = s.orderRepo.UpdatePaymentMethod(orderID, paymentType)
+		_ = s.orderRepo.UpdatePaymentMethod(uint(orderID), paymentType)
 	}
 
-	return s.orderRepo.UpdatePaymentStatus(orderID, paymentStatus)
+	return s.orderRepo.UpdatePaymentStatus(uint(orderID), paymentStatus)
 }
