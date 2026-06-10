@@ -52,6 +52,7 @@ func (r *dashboardRepository) SumRevenueByStore(storeID uint) (float64, error) {
 	var revenue float64
 	err := r.db.Model(&entity.Order{}).
 		Select("COALESCE(SUM(grand_total), 0)").
+		Where("payment_status = ? OR payment_status = ?", "settlement", "paid").
 		Where("id IN (?)",
 			r.db.Table("order_items").
 				Select("DISTINCT order_items.order_id").
