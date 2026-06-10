@@ -15,6 +15,7 @@ type Review struct {
 
 	Images    []ReviewImage `gorm:"foreignKey:ReviewID" json:"images"`
 	OrderItem OrderItem     `gorm:"foreignKey:OrderItemID" json:"order_item,omitempty"`
+	User      User          `gorm:"foreignKey:UserID" json:"user,omitempty"`
 
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

@@ -32,7 +32,7 @@ func NewOrderHandler(router fiber.Router, orderService service.OrderService, cfg
 type CheckoutRequest struct {
 	AddressID         *uint  `json:"address_id"`
 	Address           string `json:"address"`
-	LogisticServiceID uint   `json:"logistic_service_id" validate:"required"`
+	LogisticServiceID uint   `json:"logistic_service_id"`
 	VoucherCode       string `json:"voucher_code"`
 	CartItemIDs       []uint `json:"cart_item_ids"`
 }

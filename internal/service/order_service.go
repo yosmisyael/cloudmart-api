@@ -211,11 +211,14 @@ func (s *orderService) Checkout(userID uint, addressID *uint, address string, lo
 }
 
 func (s *orderService) EstimateOrder(userID uint, logisticServiceID uint, voucherCode string, cartItemIDs []uint) (*OrderEstimate, error) {
-	logisticService, err := s.logisticRepo.FindServiceByID(logisticServiceID)
-	if err != nil {
-		return nil, errors.New("layanan logistik tidak ditemukan")
+	var shippingFee float64
+	if logisticServiceID != 0 {
+		logisticService, err := s.logisticRepo.FindServiceByID(logisticServiceID)
+		if err != nil {
+			return nil, errors.New("layanan logistik tidak ditemukan")
+		}
+		shippingFee = logisticService.BasePrice
 	}
-	shippingFee := logisticService.BasePrice
 
 	cartItems, err := s.cartRepo.FindByUserID(userID)
 	if err != nil {

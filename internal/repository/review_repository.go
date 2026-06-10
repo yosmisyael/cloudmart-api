@@ -31,7 +31,7 @@ func (r *reviewRepository) Create(review *entity.Review) error {
 
 func (r *reviewRepository) FindByProductID(productID uint) ([]entity.Review, error) {
 	var reviews []entity.Review
-	err := r.db.Where("product_id = ?", productID).Preload("Images").Order("created_at DESC").Find(&reviews).Error
+	err := r.db.Where("product_id = ?", productID).Preload("Images").Preload("User").Preload("OrderItem").Preload("OrderItem.Variant").Preload("OrderItem.Variant.Product").Order("created_at DESC").Find(&reviews).Error
 	return reviews, err
 }
 
@@ -70,6 +70,10 @@ func (r *reviewRepository) FindByStoreID(storeID uint) ([]entity.Review, error) 
 	err := r.db.Joins("JOIN products ON products.id = reviews.product_id").
 		Where("products.store_id = ?", storeID).
 		Preload("Images").
+		Preload("User").
+		Preload("OrderItem").
+		Preload("OrderItem.Variant").
+		Preload("OrderItem.Variant.Product").
 		Find(&reviews).Error
 	return reviews, err
 }
