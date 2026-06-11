@@ -54,7 +54,7 @@ func (r *voucherRepository) Delete(id uint) error {
 
 func (r *voucherRepository) FindByCode(code string) (*entity.Voucher, error) {
 	var voucher entity.Voucher
-	err := r.db.Where("code = ?", code).First(&voucher).Error
+	err := r.db.Where("code ILIKE ?", code).First(&voucher).Error
 	if err != nil {
 		return nil, err
 	}
