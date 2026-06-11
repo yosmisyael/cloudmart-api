@@ -22,6 +22,7 @@ type Config struct {
 	AWSSecretAccessKey string
 	S3BucketName       string
 	Port              string
+	FrontendPaymentRedirect string
 }
 
 func LoadConfig() *Config {
@@ -45,6 +46,7 @@ func LoadConfig() *Config {
 		AWSSecretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY", ""),
 		S3BucketName:       getEnv("S3_BUCKET_NAME", ""),
 		Port:              getEnv("APP_PORT", "8080"),
+		FrontendPaymentRedirect: getEnv("FRONTEND_PAYMENT_REDIRECT", "http://localhost:5173/payment-success"),
 	}
 }
 

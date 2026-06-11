@@ -18,6 +18,7 @@ type paymentService struct {
 	serverKey    string
 	clientKey    string
 	isProduction bool
+	frontendRedirect string
 }
 
 func NewPaymentService(cfg *config.Config) PaymentService {
@@ -25,6 +26,7 @@ func NewPaymentService(cfg *config.Config) PaymentService {
 		serverKey:    cfg.MidtransServerKey,
 		clientKey:    cfg.MidtransClientKey,
 		isProduction: cfg.MidtransEnv == "production",
+		frontendRedirect: cfg.FrontendPaymentRedirect,
 	}
 }
 
@@ -47,7 +49,7 @@ func (s *paymentService) CreateSnapTransaction(order *entity.Order, user *entity
 			Phone: user.Phone,
 		},
 		Callbacks: &snap.Callbacks{
-			Finish: "http://localhost:5173/payment-success",
+			Finish: s.frontendRedirect,
 		},
 	}
 
